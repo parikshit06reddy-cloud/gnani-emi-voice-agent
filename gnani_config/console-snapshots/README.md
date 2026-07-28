@@ -37,6 +37,17 @@ important compliance property of this agent, and it is now asserted in
   contains `{{loan_last4}}`, and contains no `{{loan_account_number}}`.
 - Evidence: [`docs/screenshots/gnani-system-prompt.png`](../../docs/screenshots/gnani-system-prompt.png).
 
+### On the "Draft" label
+
+After saving, the tab shows a status pill reading **Draft** next to a **Save as version** button,
+which looks like the prompt might only be an unpublished draft while calls still use an older
+published copy. It is not. The pill's dropdown is titled "Saved Prompt Versions" and states
+"Saved versions are snapshots. All edits happen in draft." — the only entry is "Current Draft"
+(badge: "Editing"), and the Save-as-version dialog describes itself as "Versions are snapshots you
+can restore later." There is no separate published/live tier and no older version being served, so
+the saved draft *is* the prompt a live call uses. No version snapshot was created.
+Evidence: [`docs/screenshots/gnani-system-prompt-version.png`](../../docs/screenshots/gnani-system-prompt-version.png).
+
 Every `{{variable}}` in the current prompt is checked against
 `app/services/initial_message.py::build_bot_variables` — there are no placeholders the backend
 does not send.
