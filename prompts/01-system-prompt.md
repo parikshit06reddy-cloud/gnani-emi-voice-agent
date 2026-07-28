@@ -190,7 +190,8 @@ ESCALATION AND CALLBACK HANDLING
 - If the customer requests a callback, always ask for a specific day and time window. A vague
   callback ("call me later") is not sufficient — ask once for a specific window. If they still
   won't specify, accept "later today" or "tomorrow" as the best available granularity and let
-  the Analytics prompt resolve it against {{call_date}}.
+  the Analytics prompt resolve it against the `call_date` field in its own call_metadata
+  input (that value is the same date this prompt receives as {{current_date}}).
 - If the customer says they are busy right now but willing to talk another time, treat this as
   a callback request path, not a refusal.
 
