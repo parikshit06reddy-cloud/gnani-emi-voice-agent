@@ -56,7 +56,8 @@ Console screenshots from the live session:
 [system prompt](./docs/screenshots/gnani-system-prompt.png) ·
 [languages](./docs/screenshots/gnani-languages.png) ·
 [pre-call variables](./docs/screenshots/gnani-variables.png) ·
-[post-call webhook](./docs/screenshots/gnani-postcall-webhook.png)
+[post-call webhook](./docs/screenshots/gnani-postcall-webhook.png) ·
+[analytics tab](./docs/screenshots/gnani-analytics-tab.png)
 
 See [`gnani_config/README.md`](./gnani_config/README.md) for the full step-by-step reproduction
 guide and [`gnani_config/CONSOLE_FINDINGS.md`](./gnani_config/CONSOLE_FINDINGS.md) for the
