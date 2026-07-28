@@ -259,7 +259,7 @@ and disposition reasons are then visible on the dashboard.
 - Detailed audit logs (`audit_log[]` per call record)
 - Automated tests (`tests/`, runnable via `pytest`)
 
-See [`docs/production-readiness.md`](./docs/production-readiness.md) for the additional
+See [`docs/production-readiness.md`](./docs/production-readiness.md), [`docs/live-call-runbook.md`](./docs/live-call-runbook.md) for the additional
 production-hardening items not implemented in this assignment scope (HMAC webhook signing,
 horizontal scaling, secrets manager integration, DNC/compliance automation, CI/CD, DR).
 
