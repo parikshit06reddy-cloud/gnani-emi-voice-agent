@@ -113,7 +113,10 @@
     var svg = el("svg", {
       viewBox: "0 0 " + size + " " + size,
       width: "100%",
-      height: "auto",
+      // No `height` attribute: SVG geometry attributes only accept lengths, so
+      // height="auto" is invalid and logs an SVG attribute error in the console.
+      // Intrinsic sizing comes from viewBox + width:100% + the CSS below.
+      style: "height:auto;display:block",
       role: "img",
       "aria-label": "Donut chart of calls by language"
     });
