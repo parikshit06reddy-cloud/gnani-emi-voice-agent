@@ -7,14 +7,42 @@ from datetime import date
 from fastapi import APIRouter, Depends, Query, status
 
 from app.api.deps import get_call_service
+from app.core.exceptions import ValidationAppError
 from app.core.security import require_api_key
-from app.models.enums import Language
 from app.models.requests import InitialMessageRequest
-from app.models.responses import CallDetail, CallListResponse, CallSummaryRow, ErrorResponse, InitialMessageResponse
+from app.models.responses import CallDetail, CallListResponse, ErrorResponse, InitialMessageResponse
 from app.repositories.base import CallFilters
 from app.services.call_service import CallService, to_summary_row
 
 router = APIRouter(tags=["calls"])
+
+# Whitelisted sort fields. Keys are what the API accepts (including the
+# dashboard's summary-row name ``call_initiated_time``); values are the
+# actual ``CallRecord`` field the repositories sort on. Anything else is a
+# 422 rather than a silent no-op sort.
+_SORT_FIELD_ALIASES: dict[str, str] = {
+    "created_at": "created_at",
+    "updated_at": "updated_at",
+    "call_initiated_time": "call_initiated_at",
+    "call_initiated_at": "call_initiated_at",
+    "call_completed_at": "call_completed_at",
+    "call_status": "call_status",
+    "stage_code": "stage_code",
+    "ptp_date": "ptp_date",
+    "call_duration_seconds": "call_duration_seconds",
+    "call_id": "call_id",
+}
+
+
+def _resolve_sort_field(sort_by: str) -> str:
+    resolved = _SORT_FIELD_ALIASES.get(sort_by)
+    if resolved is None:
+        raise ValidationAppError(
+            f"Unsupported sort_by field {sort_by!r}. "
+            f"Supported: {', '.join(sorted(_SORT_FIELD_ALIASES))}.",
+            details={"sort_by": sort_by},
+        )
+    return resolved
 
 
 @router.post(
@@ -84,7 +112,7 @@ async def list_calls(
     q: str | None = Query(default=None, description="Full-text search over transcript/summary/reason."),
     page: int = Query(default=1, ge=1, description="1-based page number."),
     page_size: int = Query(default=25, ge=1, le=200, description="Items per page (max 200)."),
-    sort_by: str = Query(default="created_at", description="Field to sort by."),
+    sort_by: str = Query(default="created_at", description="Field to sort by (whitelisted; call_initiated_time is accepted as an alias for call_initiated_at)."),
     sort_dir: str = Query(default="desc", pattern="^(asc|desc)$", description="Sort direction."),
 ) -> CallListResponse:
     """List call summary rows matching the supplied filters."""
@@ -102,7 +130,7 @@ async def list_calls(
         q=q,
     )
     result = await call_service.list_calls(
-        filters, page=page, page_size=page_size, sort_by=sort_by, sort_dir=sort_dir
+        filters, page=page, page_size=page_size, sort_by=_resolve_sort_field(sort_by), sort_dir=sort_dir
     )
     rows = [to_summary_row(record) for record in result.items]
     return CallListResponse(

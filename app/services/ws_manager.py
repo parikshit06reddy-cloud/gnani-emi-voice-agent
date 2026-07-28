@@ -37,7 +37,7 @@ class WebSocketManager:
         for connection in self._connections:
             try:
                 await connection.send_json(message)
-            except Exception:  # noqa: BLE001 - broad by design, socket may be in any state
+            except Exception:
                 logger.info("ws_send_failed_dropping_connection")
                 stale.append(connection)
         for connection in stale:

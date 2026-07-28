@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
-
 import httpx
 import pytest
 
-from app.core.config import Settings, get_settings
+from app.core.config import get_settings
 from app.main import create_app
 from app.repositories.json_repo import JsonCallRepository
 from app.services.call_service import CallService

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 
 async def _create_and_complete_call(
     client, api_headers, webhook_headers, *, customer_id, stage_code, ptp_date=None, phone_suffix="0001"
@@ -138,3 +136,53 @@ async def test_public_config_endpoint_never_exposes_key(client):
     assert resp.status_code == 200
     assert resp.json() == {"api_key_required": True}
     assert "dev-api-key" not in resp.text
+
+
+async def test_sort_by_dashboard_alias_actually_sorts(client, api_headers, webhook_headers):
+    """F-03 regression: the dashboard sends sort_by=call_initiated_time; it
+    must map to call_initiated_at and genuinely order the rows."""
+    for suffix in ("1001", "1002", "1003"):
+        await _create_and_complete_call(
+            client, api_headers, webhook_headers,
+            customer_id=f"CUST{suffix}", stage_code="ALREADY_PAID", phone_suffix=suffix,
+        )
+    asc = await client.get(
+        "/api/v1/calls?sort_by=call_initiated_time&sort_dir=asc", headers=api_headers
+    )
+    desc = await client.get(
+        "/api/v1/calls?sort_by=call_initiated_time&sort_dir=desc", headers=api_headers
+    )
+    asc_ids = [row["call_id"] for row in asc.json()["items"]]
+    desc_ids = [row["call_id"] for row in desc.json()["items"]]
+    assert len(asc_ids) == 3
+    assert asc_ids == list(reversed(desc_ids))
+    asc_times = [row["call_initiated_time"] for row in asc.json()["items"]]
+    assert asc_times == sorted(asc_times)
+
+
+async def test_sort_by_unknown_field_is_422_not_silent_noop(client, api_headers):
+    resp = await client.get("/api/v1/calls?sort_by=__proto__", headers=api_headers)
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "VALIDATION_ERROR"
+
+
+async def test_hindi_preferred_language_rejected_with_supported_list(client, api_headers):
+    """F-23: the assignment's section 5.1 sample uses 'Hindi'; the alias is
+    recognised but rejected by default with a clear, configurable message."""
+    body = {
+        "customer_id": "CUST5100",
+        "customer_name": "Rahul Sharma",
+        "phone_number": "9876543210",
+        "country_code": "+91",
+        "loan_account_number": "LAN123456",
+        "emi_amount": 1200.0,
+        "emi_due_date": "2026-07-25",
+        "preferred_language": "Hindi",
+        "currency": "USD",
+    }
+    resp = await client.post("/api/Initial_Message", json=body, headers=api_headers)
+    assert resp.status_code == 422
+    err = resp.json()["error"]
+    assert err["code"] == "VALIDATION_ERROR"
+    assert "hi-IN" in err["message"]
+    assert err["details"]["supported_languages"] == ["en-US", "es-ES"]

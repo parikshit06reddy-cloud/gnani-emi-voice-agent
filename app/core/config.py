@@ -12,7 +12,7 @@ import logging
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, field_validator
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _bootstrap_logger = logging.getLogger("gnani.config")
@@ -72,6 +72,13 @@ class Settings(BaseSettings):
     DEFAULT_CURRENCY: str = "USD"
     ORG_NAME: str = "Apex Financial Services"
     BOT_NAME: str = "Aria"
+    # Spoken-safe phrase injected as {{payment_link_hint}} in the bot prompt.
+    PAYMENT_LINK_HINT: str = "the payment link sent to you by SMS"
+    # Comma-separated allowed customer languages. The assignment (section 3.3)
+    # requires English (US) and Spanish, but the sample payload (section 5.1)
+    # uses "Hindi" — the alias is recognised, and whether it is *accepted* is
+    # controlled here (see README "Spec inconsistency" note).
+    SUPPORTED_LANGUAGES: str = "en-US,es-ES"
     CORS_ORIGINS: str = "*"
 
     # --- Stage code engine tunables ----------------------------------------
@@ -88,6 +95,11 @@ class Settings(BaseSettings):
         if self.CORS_ORIGINS.strip() == "*":
             return ["*"]
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
+
+    @property
+    def supported_languages_list(self) -> list[str]:
+        """Return SUPPORTED_LANGUAGES as a parsed list of language codes."""
+        return [lang.strip() for lang in self.SUPPORTED_LANGUAGES.split(",") if lang.strip()]
 
     @property
     def repository_kind(self) -> Literal["json", "mongo"]:

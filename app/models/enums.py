@@ -108,6 +108,7 @@ class CallStatus(str, Enum):
     FAILED = "failed"
     NO_ANSWER = "no_answer"
     BUSY = "busy"
+    VOICEMAIL = "voicemail"
     CANCELLED = "cancelled"
 
 
@@ -116,6 +117,10 @@ class Language(str, Enum):
 
     EN_US = "en-US"
     ES_ES = "es-ES"
+    # Recognised because the assignment's section 5.1 sample payload uses
+    # "preferred_language": "Hindi"; whether it is ACCEPTED at request time is
+    # governed by settings.SUPPORTED_LANGUAGES (default: en-US, es-ES only).
+    HI_IN = "hi-IN"
     MIXED = "mixed"
     UNKNOWN = "unknown"
 

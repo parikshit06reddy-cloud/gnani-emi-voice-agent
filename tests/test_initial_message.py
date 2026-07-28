@@ -29,6 +29,11 @@ def test_english_message_confirms_identity_and_masks_account():
     assert msg.strip().endswith("?")
     assert "Aria" in msg
     assert "Apex Financial Services" in msg
+    # COMPLIANCE (identity gate): amount and due date must NOT be in the
+    # pre-identity opener — they are disclosed only in stage S3 after the
+    # customer confirms their identity.
+    assert "1200" not in msg
+    assert "July 25" not in msg and "2026" not in msg
 
 
 def test_spanish_message_confirms_identity_and_masks_account():
@@ -45,7 +50,9 @@ def test_spanish_message_confirms_identity_and_masks_account():
     assert "7654" in msg
     assert "LAN987654" not in msg
     assert msg.strip().endswith("?")
-    assert "agosto" in msg
+    # COMPLIANCE (identity gate): no amount, no due date, pre-identity.
+    assert "850" not in msg
+    assert "agosto" not in msg and "2026" not in msg
 
 
 def test_message_never_includes_phone_number():
@@ -79,12 +86,19 @@ def test_build_bot_variables_contains_all_required_keys():
         settings=settings,
         initial_message=msg,
     )
+    # Keys must match the injected-variable names declared in
+    # prompts/01-system-prompt.md verbatim, or the prompt is unwired.
     required_keys = {
-        "customer_id", "customer_first_name", "customer_full_name",
-        "loan_account_last4", "emi_amount", "currency", "emi_due_date",
+        "customer_id", "customer_name", "customer_first_name",
+        "loan_last4", "emi_amount", "currency", "emi_due_date",
         "emi_due_date_display", "preferred_language", "org_name", "bot_name",
+        "current_date", "payment_link_hint",
         "initial_message", "asr_engine", "tts_engine", "llm_engine",
     }
     assert required_keys.issubset(variables.keys())
-    assert variables["loan_account_last4"] == "3456"
+    assert variables["loan_last4"] == "3456"
+    assert variables["customer_name"] == "Rahul Sharma"
+    assert variables["payment_link_hint"]  # non-empty spoken-safe phrase
+    # Full account number and raw phone must never reach the console.
+    assert "LAN123456" not in str(variables.values())
     assert "9876543210" not in str(variables)

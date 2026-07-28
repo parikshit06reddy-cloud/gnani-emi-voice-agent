@@ -13,7 +13,8 @@ import json
 import os
 import tempfile
 from collections import Counter
-from datetime import date, datetime
+from datetime import UTC, date, datetime
+from enum import Enum
 from pathlib import Path
 from typing import Any
 
@@ -41,7 +42,7 @@ class JsonCallRepository(CallRepository):
     def _read_state_sync(self) -> dict[str, Any]:
         if not self._path.exists():
             return {"calls": {}, "event_ids": [], "sequences": {}}
-        with open(self._path, "r", encoding="utf-8") as fh:
+        with open(self._path, encoding="utf-8") as fh:
             content = fh.read().strip()
             if not content:
                 return {"calls": {}, "event_ids": [], "sequences": {}}
@@ -118,6 +119,24 @@ class JsonCallRepository(CallRepository):
         filtered = [r for r in records if _matches(r, filters)]
         return _compute_stats(filtered)
 
+    async def try_claim_event_id(self, event_id: str) -> bool:
+        async with self._lock:
+            state = self._read_state_sync()
+            event_ids = state.setdefault("event_ids", [])
+            if event_id in event_ids:
+                return False
+            event_ids.append(event_id)
+            self._write_state_sync(state)
+            return True
+
+    async def release_event_id(self, event_id: str) -> None:
+        async with self._lock:
+            state = self._read_state_sync()
+            event_ids = state.setdefault("event_ids", [])
+            if event_id in event_ids:
+                event_ids.remove(event_id)
+                self._write_state_sync(state)
+
     async def event_id_seen(self, event_id: str) -> bool:
         async with self._lock:
             state = self._read_state_sync()
@@ -180,12 +199,25 @@ def _matches(record: CallRecord, filters: CallFilters) -> bool:
 
 
 def _sort_key(record: CallRecord, sort_by: str) -> Any:
+    """Type-stable sort key: None sorts last-on-desc/first-on-asc consistently.
+
+    Everything is reduced to ``(has_value, comparable_string)`` so mixed
+    None/enum/str/datetime/date values can never raise TypeError mid-sort.
+    Datetimes/dates use ISO format (lexicographic == chronological); numbers
+    are zero-padded to keep numeric order.
+    """
     value = getattr(record, sort_by, None)
     if value is None:
-        return datetime.min.replace(tzinfo=None)
+        return (0, "")
     if isinstance(value, datetime):
-        return value.replace(tzinfo=None)
-    return value
+        return (1, value.astimezone(UTC).isoformat() if value.tzinfo else value.isoformat())
+    if isinstance(value, date):
+        return (1, value.isoformat())
+    if isinstance(value, (int, float)):
+        return (1, f"{value:020.4f}")
+    if isinstance(value, Enum):
+        return (1, str(value.value).lower())
+    return (1, str(value).lower())
 
 
 def _compute_stats(records: list[CallRecord]) -> dict[str, Any]:

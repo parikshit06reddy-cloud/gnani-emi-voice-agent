@@ -169,3 +169,68 @@ flowchart TD
 - LLM-side rules it enforces: [`prompts/03-analytics-prompt.md`](../prompts/03-analytics-prompt.md).
 - Stored field: `stage_code_source` on `CallDetail` (`llm` | `derived` | `fallback`), returned by
   `GET /api/v1/calls/{call_id}` per [CONTRACT.md](../CONTRACT.md).
+
+
+## Engine rules added in the hardening pass (v1.1)
+
+All rules below are implemented in `app/services/stage_code.py` (with the
+date resolver in `app/services/date_rules.py`) and regression-locked by
+`tests/test_golden_transcripts.py` and `tests/test_date_rules.py`.
+
+### VM vs RNR (zero-customer-turn derivation)
+Precedence when the payload proposes no stage code:
+1. `call_status` of `busy` → `BUSY`; `no_answer` → `RNR`; `voicemail` → `VM`;
+   `failed`/`cancelled` → `DSCN` (unchanged).
+2. Otherwise, **zero customer turns** in the transcript:
+   - any turn contains a voicemail-greeting marker ("voicemail", "leave a
+     message", "after the tone/beep", "buzón de voz", "deje su mensaje",
+     "después del tono") → `VM` (beep-then-monologue: the bot spoke into a
+     machine);
+   - no markers → `RNR`.
+3. Only then the keyword fallback classifier runs. `UNCLEAR` remains the
+   terminal fallback. The same VM/RNR derivation is used as the downgrade
+   target when a proposed commitment code fails its evidence/confidence gate
+   on a call where the customer never spoke.
+
+### Vague-commitment gate (PTP only)
+An evidence quote consisting of non-committal phrasing ("I'll try", "arrange
+something", "soon", "see what I can do", "pronto", "cuando pueda", …) with
+**no recognisable date expression** can never ground a PTP — even if the LLM
+attached a plausible `ptp_date`. Rule `vague_commitment_no_date_evidence`
+downgrades to `UNCLEAR`. This is the structural answer to "how do you prevent
+hallucinated PTPs": the promise must be datable from the customer's own words.
+
+### Evidence-date consistency (PTP only)
+If the evidence quote itself contains a resolvable date phrase ("tomorrow",
+"day after tomorrow", "next Friday", "end of month", "el 30", "8 de agosto",
+…), the backend independently resolves it (`date_rules.py`, anchored on the
+call date, never resolving into the past, emitting multiple candidates for
+genuinely ambiguous phrases like "next Friday") and requires the LLM's
+`ptp_date` to match a candidate. Mismatch → rule `evidence_date_mismatch`,
+downgrade to `UNCLEAR`. Quotes with no date phrase are not constrained (the
+verifier never fabricates a requirement).
+
+### RTP precedence: MEDICAL > FINANCIAL
+"I'm in the hospital, no money" contains both hardships; the documented
+precedence is `RTP_MEDICAL` (rule `rtp_financial_reclassified_as_medical`)
+because a medical hardship changes both the compliance posture and the
+correct follow-up cadence. Pure financial hardship stays `RTP_FINANCIAL`.
+
+### THIRD_PARTY vs WRONG_NUMBER relation patterns
+"This isn't Rahul, he's my brother" (and "es mi hermano/hermana/esposo/…")
+now matches the third-party patterns: any acknowledgement that the borrower
+is a real, reachable person at this number is `THIRD_PARTY`; only an explicit
+denial of association is `WRONG_NUMBER`.
+
+### Precedence: later explicit commitment wins
+"Wrong number" followed later in the same call by an identity confirmation
+and an explicit, evidence-backed commitment ("fine, yes this is Rahul, I'll
+pay it tomorrow") resolves to the commitment code. The TP/WN disambiguation
+only ever runs when the *proposed* code is TP/WN — an evidence-gated
+commitment proposal is never overridden by an earlier throwaway remark.
+
+### Persistence guarantee for downgrades
+When the final resolved code is not a `PTP_*` code, `ptp_date` and
+`ptp_amount` are persisted as `null` regardless of what the LLM sent (same
+for `callback_datetime` outside `CALLBACK_SCHEDULED`) — a downgraded
+disposition can never leave a hallucinated promise visible on the dashboard.

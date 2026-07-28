@@ -26,6 +26,10 @@ _LANGUAGE_ALIASES: dict[str, Language] = {
     "spanish": Language.ES_ES,
     "español": Language.ES_ES,
     "espanol": Language.ES_ES,
+    "hi": Language.HI_IN,
+    "hi-in": Language.HI_IN,
+    "hi_in": Language.HI_IN,
+    "hindi": Language.HI_IN,
     "mixed": Language.MIXED,
     "unknown": Language.UNKNOWN,
 }
@@ -48,13 +52,16 @@ def normalise_language(value: str | None) -> Language:
 def normalise_language_strict(value: str) -> Language | None:
     """Normalise a language alias, returning ``None`` if unrecognised.
 
-    Only ``en-US`` and ``es-ES`` are valid outcomes for request-time
-    ``preferred_language`` per CONTRACT (mixed/unknown are not acceptable
-    customer preferences).
+    Only concrete customer languages (``en-US``, ``es-ES``, ``hi-IN``) are
+    valid outcomes for request-time ``preferred_language`` — ``mixed`` and
+    ``unknown`` are call-outcome metadata, never acceptable preferences.
+    Whether a concrete language is actually ENABLED for this deployment is a
+    separate, configurable check against ``settings.SUPPORTED_LANGUAGES``
+    performed in the service layer (see CallService.create_call).
     """
     key = _fold(value)
     result = _LANGUAGE_ALIASES.get(key)
-    if result in (Language.EN_US, Language.ES_ES):
+    if result in (Language.EN_US, Language.ES_ES, Language.HI_IN):
         return result
     return None
 

@@ -6,13 +6,13 @@ post-call-webhook flows.
 from __future__ import annotations
 
 import logging
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from typing import Any
 
 from fastapi.encoders import jsonable_encoder
 
 from app.core.config import Settings
-from app.core.exceptions import CallNotFound
+from app.core.exceptions import CallNotFound, ValidationAppError
 from app.models.call import (
     AuditLogEntry,
     CallRecord,
@@ -22,7 +22,7 @@ from app.models.call import (
     TranscriptTurn,
     utcnow,
 )
-from app.models.enums import CallStatus, Language, StageCodeSource
+from app.models.enums import PTP_STAGE_CODES, CallStatus, Language, StageCode
 from app.models.requests import InitialMessageRequest, PostCallWebhookRequest
 from app.models.responses import CallSummaryRow
 from app.models.util import mask_phone, normalise_language
@@ -95,10 +95,20 @@ class CallService:
         """
         settings = self._settings
         language = normalise_language(request.preferred_language)
-        if language not in (Language.EN_US, Language.ES_ES):
-            language = Language.EN_US
+        # Configurable allowed-language gate (see README "Spec inconsistency"):
+        # the request validator has already mapped the alias to a concrete
+        # Language; here we enforce which concrete languages this deployment
+        # actually accepts. Rejecting loudly beats silently coercing to en-US.
+        supported = settings.supported_languages_list
+        if language.value not in supported:
+            raise ValidationAppError(
+                f"preferred_language '{language.value}' is recognised but not enabled "
+                f"for this deployment. Supported languages: {', '.join(supported)}. "
+                "Set SUPPORTED_LANGUAGES to change this.",
+                details={"preferred_language": language.value, "supported_languages": supported},
+            )
 
-        today = datetime.now(timezone.utc).date()
+        today = datetime.now(UTC).date()
         call_id = await self._generate_call_id(today)
 
         initial_message = request.initial_message or initial_message_service.build_initial_message(
@@ -222,14 +232,33 @@ class CallService:
         if existing is None:
             raise CallNotFound(f"No call found with call_id={payload.call_id!r}.")
 
-        already_seen = await self._repo.event_id_seen(idempotency_key)
-        if already_seen:
+        # Claim-before-process: an atomic claim (unique-index insert on Mongo,
+        # lock-guarded list append on the JSON store) closes the
+        # check-then-act race, so two concurrent deliveries of the same
+        # event_id can never both apply their updates.
+        claimed = await self._repo.try_claim_event_id(idempotency_key)
+        if not claimed:
             logger.info(
                 "webhook_duplicate_ignored",
                 extra={"extra_fields": {"call_id": payload.call_id, "idempotency_key": idempotency_key}},
             )
             return existing, True
 
+        try:
+            return await self._apply_webhook(payload, existing, idempotency_key), False
+        except Exception:
+            # Processing failed after the claim succeeded — release it so a
+            # redelivery is not swallowed as a duplicate of a webhook that
+            # never actually took effect.
+            await self._repo.release_event_id(idempotency_key)
+            raise
+
+    async def _apply_webhook(
+        self,
+        payload: PostCallWebhookRequest,
+        existing: CallRecord,
+        idempotency_key: str,
+    ) -> CallRecord:
         normalised_disposition = normalise_disposition(payload.disposition)
         call_date = (payload.call_started_at or existing.call_initiated_at or utcnow()).date()
 
@@ -270,9 +299,25 @@ class CallService:
             "stage_code_source": resolution.stage_code_source,
             "disposition_reason": resolution.disposition_reason,
             "disposition_summary": normalised_disposition.disposition_summary,
-            "ptp_date": normalised_disposition.ptp_date if resolution.stage_code.value.startswith("PTP") else normalised_disposition.ptp_date,
-            "ptp_amount": normalised_disposition.ptp_amount,
-            "callback_datetime": normalised_disposition.callback_datetime,
+            # A PTP date/amount is only meaningful when the FINAL resolved code
+            # is a PTP_* code. If the engine downgraded the proposal (e.g. to
+            # UNCLEAR for missing evidence), persisting the LLM's ptp_date
+            # would surface a hallucinated promise on the dashboard.
+            "ptp_date": (
+                normalised_disposition.ptp_date
+                if resolution.stage_code in PTP_STAGE_CODES
+                else None
+            ),
+            "ptp_amount": (
+                normalised_disposition.ptp_amount
+                if resolution.stage_code in PTP_STAGE_CODES
+                else None
+            ),
+            "callback_datetime": (
+                normalised_disposition.callback_datetime
+                if resolution.stage_code == StageCode.CALLBACK_SCHEDULED
+                else None
+            ),
             "language_captured": language_captured,
             "language_switched": language_switched,
             "sentiment": normalised_disposition.sentiment,
@@ -305,11 +350,10 @@ class CallService:
         safe_updates = _jsonable(updates)
         updated = await self._repo.update_from_webhook(payload.call_id, safe_updates)
         assert updated is not None  # existence already checked above
-        await self._repo.mark_event_id_seen(idempotency_key)
         await self._ws.broadcast(
             {"type": "call.updated", "call_id": updated.call_id, "row": to_summary_row(updated).model_dump(mode="json")}
         )
-        return updated, False
+        return updated
 
     async def get_call(self, call_id: str) -> CallRecord:
         """Fetch a call by id or raise :class:`CallNotFound`."""
@@ -347,7 +391,7 @@ def _detect_language_mix(turns: list[TranscriptTurn]) -> tuple[Language | None, 
     customer_langs = {
         t.language
         for t in turns
-        if t.speaker.value == "customer" and t.language in (Language.EN_US, Language.ES_ES)
+        if t.speaker.value == "customer" and t.language in (Language.EN_US, Language.ES_ES, Language.HI_IN)
     }
     if len(customer_langs) > 1:
         return Language.MIXED, True

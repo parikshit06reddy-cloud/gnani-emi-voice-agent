@@ -7,9 +7,7 @@ disconnect overrides, and the bilingual keyword fallback.
 
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
-
-import pytest
+from datetime import UTC, date, datetime
 
 from app.models.enums import StageCode, StageCodeSource
 from app.models.requests import DispositionPayload, WebhookTranscriptTurn
@@ -23,7 +21,7 @@ def turn(n: int, speaker: str, text: str, language: str = "en-US") -> WebhookTra
     return WebhookTranscriptTurn(turn=n, speaker=speaker, text=text, language=language)
 
 
-def make_disposition(**kwargs) -> "object":
+def make_disposition(**kwargs) -> object:
     payload = DispositionPayload(**kwargs)
     return normalise_disposition(payload)
 
@@ -99,7 +97,7 @@ def test_callback_scheduled_accepted_with_datetime():
     result = resolve(
         disposition_kwargs=dict(
             stage_code="CALLBACK_SCHEDULED",
-            callback_datetime=datetime(2026, 7, 29, 17, 0, tzinfo=timezone.utc),
+            callback_datetime=datetime(2026, 7, 29, 17, 0, tzinfo=UTC),
             confidence=0.8,
             customer_verified=True,
             evidence_quote="call me back tomorrow at 5pm",
@@ -216,13 +214,15 @@ def test_evidence_matching_is_accent_and_case_insensitive():
 
 
 def test_ptp_code_without_ptp_date_downgrades():
-    transcript = [turn(1, "customer", "I will pay soon, I promise.")]
+    # Non-vague commitment wording but no date anywhere and no ptp_date field:
+    # must trip the missing-ptp_date rule specifically.
+    transcript = [turn(1, "customer", "Yes, I will make the payment in full.")]
     result = resolve(
         disposition_kwargs=dict(
             stage_code="PTP_FUTURE",
             confidence=0.9,
             customer_verified=True,
-            evidence_quote="I will pay soon, I promise",
+            evidence_quote="I will make the payment in full",
         ),
         transcript=transcript,
     )
@@ -431,13 +431,17 @@ def test_no_stage_code_but_no_answer_status_yields_rnr():
     assert result.stage_code == StageCode.RNR
 
 
-def test_no_stage_code_and_no_transcript_yields_unclear():
+def test_no_stage_code_and_no_transcript_yields_rnr():
+    # Per the documented precedence (analytics prompt tie-breaker D and
+    # docs/stage-code-logic.md): zero customer turns and no voicemail
+    # markers is RNR, even when call_status says "completed".
     result = resolve(
         disposition_kwargs=dict(stage_code=None),
         transcript=[],
         call_status="completed",
     )
-    assert result.stage_code == StageCode.UNCLEAR
+    assert result.stage_code == StageCode.RNR
+    assert "zero_customer_turns_no_markers" in result.applied_rules
 
 
 # ---------------------------------------------------------------------------
@@ -478,7 +482,8 @@ def test_keyword_fallback_refusal_no_reason():
 
 
 def test_stage_group_mapping_present_for_all_final_codes():
-    from app.models.enums import STAGE_CODE_TO_GROUP, StageCode as SC
+    from app.models.enums import STAGE_CODE_TO_GROUP
+    from app.models.enums import StageCode as SC
 
     for code in SC:
         assert code in STAGE_CODE_TO_GROUP

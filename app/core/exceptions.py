@@ -19,6 +19,14 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.logging import get_request_id
 
+# Starlette >= 0.37 renamed the 422 constant; resolve lazily so the old,
+# deprecated name is never even evaluated on modern versions.
+_HTTP_422: int = (
+    status.HTTP_422_UNPROCESSABLE_CONTENT
+    if hasattr(status, "HTTP_422_UNPROCESSABLE_CONTENT")
+    else 422
+)
+
 
 class AppError(Exception):
     """Base class for all handled application errors.
@@ -54,7 +62,7 @@ class ValidationAppError(AppError):
     """Raised for domain-level validation failures outside pydantic."""
 
     code = "VALIDATION_ERROR"
-    status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
+    status_code = _HTTP_422
 
 
 class CallNotFound(AppError):
@@ -76,18 +84,6 @@ class GnaniTriggerFailed(AppError):
 
     code = "GNANI_TRIGGER_FAILED"
     status_code = status.HTTP_502_BAD_GATEWAY
-
-
-class DuplicateWebhook(AppError):
-    """Raised internally to signal an already-processed webhook event.
-
-    Note: the webhook route treats this as a *successful* no-op (HTTP 200
-    with ``duplicate: true``) rather than an error response — it is modelled
-    as an exception purely so the service layer can short-circuit cleanly.
-    """
-
-    code = "DUPLICATE_WEBHOOK"
-    status_code = status.HTTP_200_OK
 
 
 class Unauthorized(AppError):
@@ -128,7 +124,7 @@ def register_exception_handlers(app: FastAPI) -> None:
             for err in exc.errors()
         ]
         return JSONResponse(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=_HTTP_422,
             content=_error_envelope(
                 "VALIDATION_ERROR",
                 "Request validation failed.",

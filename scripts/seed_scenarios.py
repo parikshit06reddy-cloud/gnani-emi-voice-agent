@@ -24,7 +24,7 @@ import json
 import os
 import sys
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -36,7 +36,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 API_KEY = os.environ.get("API_KEY", "dev-api-key")
 WEBHOOK_API_KEY = os.environ.get("WEBHOOK_API_KEY", "dev-webhook-key")
 
-TODAY = datetime.now(timezone.utc).date()
+TODAY = datetime.now(UTC).date()
 
 RECORDINGS_DIR = PROJECT_ROOT / "samples" / "recordings"
 
@@ -181,7 +181,7 @@ class ScenarioRunner:
         recording_tags: tuple[str, ...] = (),
         **overrides: Any,
     ) -> dict[str, Any]:
-        started = datetime.now(timezone.utc).replace(microsecond=0) + timedelta(minutes=started_offset_minutes)
+        started = datetime.now(UTC).replace(microsecond=0) + timedelta(minutes=started_offset_minutes)
         ended = started + timedelta(seconds=call_duration_seconds)
         recording_language = overrides.get("language_detected", "en-US")
         payload = {
@@ -360,7 +360,7 @@ class ScenarioRunner:
         if resp.status_code != 201:
             return self.record(name, False, f"initiate failed: {resp.status_code}")
         call_id = resp.json()["call_id"]
-        callback_dt = (datetime.now(timezone.utc) + timedelta(days=1)).replace(hour=17, minute=0, second=0, microsecond=0)
+        callback_dt = (datetime.now(UTC) + timedelta(days=1)).replace(hour=17, minute=0, second=0, microsecond=0)
         transcript = [
             {"turn": 1, "speaker": "bot", "text": "Am I speaking with Daniel O'Sullivan about your EMI?", "language": "en-US"},
             {"turn": 2, "speaker": "customer", "text": "Yes, but I'm in a meeting right now.", "language": "en-US"},
@@ -809,7 +809,7 @@ def _write_results(results: list[ScenarioResult], output_path: Path) -> None:
     mandatory = [r for r in results if not r.supplementary]
     supplementary = [r for r in results if r.supplementary]
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "mandatory": {
             "total": len(mandatory),
             "passed": sum(1 for r in mandatory if r.passed),

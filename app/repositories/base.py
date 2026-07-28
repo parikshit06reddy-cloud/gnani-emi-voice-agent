@@ -83,6 +83,23 @@ class CallRepository(ABC):
         """Compute aggregate statistics over records matching ``filters``."""
 
     @abstractmethod
+    async def try_claim_event_id(self, event_id: str) -> bool:
+        """Atomically claim a webhook event id.
+
+        Returns True if this call claimed the id (first delivery), False if
+        it was already claimed (duplicate delivery). Claim-before-process
+        closes the check-then-act race under concurrent duplicate deliveries.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    async def release_event_id(self, event_id: str) -> None:
+        """Release a previously claimed event id (used when processing fails
+        after a successful claim, so a redelivery is not treated as a
+        duplicate of a webhook that never actually took effect)."""
+        raise NotImplementedError
+
+    @abstractmethod
     async def event_id_seen(self, event_id: str) -> bool:
         """Return whether a webhook ``event_id`` has already been processed."""
 

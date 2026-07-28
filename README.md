@@ -150,8 +150,12 @@ gnani-emi-voice-agent/
 cp .env.example .env
 docker compose up --build
 ```
-The app starts with JSON-file storage and `GNANI_MODE=mock` by default — no external
-dependencies required to see the full lifecycle end-to-end.
+Compose brings up the API **plus a bundled MongoDB** and wires them together
+(`docker-compose.yml` sets `MONGODB_URI=mongodb://mongo:27017`, overriding `.env`,
+so the compose stack always uses the preferred MongoDB backend). `GNANI_MODE=mock`
+by default — no Gnani credentials required to see the full lifecycle end-to-end.
+The zero-dependency JSON-file storage default applies to Option B (local
+virtualenv) only.
 
 ### Option B — Local virtualenv
 
@@ -175,6 +179,8 @@ in [CONTRACT.md](./CONTRACT.md#env-vars-envexample)):
 | `MONGODB_URI` | If set, use MongoDB; if unset, use JSON file store | unset (JSON store) |
 | `ORG_NAME` / `BOT_NAME` | Injected into prompts and the initial message | `Apex Financial Services` / `Aria` |
 | `PUBLIC_WEBHOOK_BASE_URL` | Base URL Gnani calls back to for the post-call webhook | `http://localhost:8000` |
+| `SUPPORTED_LANGUAGES` | Comma-separated allowed customer languages | `en-US,es-ES` |
+| `PAYMENT_LINK_HINT` | Spoken-safe phrase injected as `{{payment_link_hint}}` | `the payment link sent to you by SMS` |
 
 No secrets are committed — see the Security note below.
 
@@ -256,6 +262,28 @@ and disposition reasons are then visible on the dashboard.
 See [`docs/production-readiness.md`](./docs/production-readiness.md) for the additional
 production-hardening items not implemented in this assignment scope (HMAC webhook signing,
 horizontal scaling, secrets manager integration, DNC/compliance automation, CI/CD, DR).
+
+## Spec inconsistency handled (assignment §3.3 vs §5.1/§5.2)
+
+Section 3.3 requires English (US) and Spanish, but the §5.1 sample payload uses
+`"preferred_language": "Hindi"` with a `+91` number while §5.2 quotes `1200 USD`.
+This submission handles all three gracefully:
+
+- **Language:** every alias (`English`, `en-US`, `Spanish`, `Español`, `Hindi`,
+  `hi-IN`, …) is *recognised* and normalised; whether a language is *accepted*
+  is governed by the configurable `SUPPORTED_LANGUAGES` env var (default
+  `en-US,es-ES` per §3.3). Sending "Hindi" against the default set returns a
+  clear 422 naming the supported languages — never a silent coercion to
+  English. Enabling `hi-IN` in `SUPPORTED_LANGUAGES` accepts the request; the
+  opening-message template then falls back to English (only EN/ES templates
+  ship, matching the bilingual assignment scope), which is documented behaviour.
+- **Country code:** `+91` (or any `+<1-4 digits>` code) validates fine — the
+  phone rules are country-agnostic.
+- **Currency:** amounts carry an explicit ISO `currency` field (default `USD`
+  per §5.2), so `1200 USD` to a `+91` number is representable as-given.
+
+Assumption documented: the §5.1 payload is treated as illustrative sample data,
+and §3.3's bilingual EN/ES requirement is authoritative for defaults.
 
 ## Security note
 

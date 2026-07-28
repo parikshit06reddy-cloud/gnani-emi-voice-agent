@@ -1,0 +1,25 @@
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+# E/F: pycodestyle + pyflakes; I: import order; UP: pyupgrade;
+# B: bugbear (B008 excluded — FastAPI's Depends/Query-in-default idiom);
+# SIM: simplify; RUF: ruff-native (RUF034 caught the real ptp_date bug).
+select = ["E4", "E7", "E9", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = [
+  "B008",   # FastAPI dependency-injection uses function calls in defaults by design
+  "SIM102", # nested ifs kept where they read as separate business rules
+  "RUF001", # allow es-ES/typographic characters in string literals
+  "RUF002", # allow accented characters in docstrings (Spanish templates)
+  "RUF003", # allow accented characters in comments
+  "RUF005", # `list + [item]` reads as append-and-copy; style-only
+  "UP042",  # keep `str, Enum` (not StrEnum) for explicit pydantic v2 string semantics
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E712"]  # explicit `== True/False` reads clearer in assertions
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true

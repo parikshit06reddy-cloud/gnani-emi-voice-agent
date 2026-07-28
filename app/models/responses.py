@@ -99,29 +99,28 @@ class WebhookAckResponse(BaseModel):
     ptp_date: date | None = None
 
 
+_CALL_SUMMARY_ROW_EXAMPLE: dict = {
+    "call_id": "CALL-20260728-0001",
+    "customer_id": "CUST001",
+    "customer_name": "Rahul Sharma",
+    "masked_phone_number": "******3210",
+    "loan_account_number": "LAN123456",
+    "call_initiated_time": "2026-07-28T12:00:00+00:00",
+    "call_status": "completed",
+    "call_duration_seconds": 96,
+    "call_duration_display": "01:36",
+    "stage_code": "PTP_FUTURE",
+    "stage_group": "ptp",
+    "disposition_reason": "Customer promised payment by month end.",
+    "ptp_date": "2026-07-30",
+    "language": "es-ES",
+}
+
+
 class CallSummaryRow(BaseModel):
     """One row in the ``GET /api/v1/calls`` list response."""
 
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "call_id": "CALL-20260728-0001",
-                "customer_id": "CUST001",
-                "customer_name": "Rahul Sharma",
-                "masked_phone_number": "******3210",
-                "loan_account_number": "LAN123456",
-                "call_initiated_time": "2026-07-28T12:00:00+00:00",
-                "call_status": "completed",
-                "call_duration_seconds": 96,
-                "call_duration_display": "01:36",
-                "stage_code": "PTP_FUTURE",
-                "stage_group": "ptp",
-                "disposition_reason": "Customer promised payment by month end.",
-                "ptp_date": "2026-07-30",
-                "language": "es-ES",
-            }
-        }
-    }
+    model_config = {"json_schema_extra": {"example": _CALL_SUMMARY_ROW_EXAMPLE}}
 
     call_id: str
     customer_id: str
@@ -145,7 +144,7 @@ class CallListResponse(BaseModel):
     model_config = {
         "json_schema_extra": {
             "example": {
-                "items": [CallSummaryRow.model_config["json_schema_extra"]["example"]],
+                "items": [_CALL_SUMMARY_ROW_EXAMPLE],
                 "page": 1,
                 "page_size": 25,
                 "total": 1,

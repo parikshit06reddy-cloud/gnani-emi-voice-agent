@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from app.models.enums import DispositionCategory, Language, Speaker
+from app.models.enums import DispositionCategory, Speaker
 from app.models.util import normalise_language_strict
 
 _PHONE_RE = re.compile(r"^\d{7,15}$")
@@ -212,7 +212,7 @@ class PostCallWebhookRequest(BaseModel):
         return v.strip()
 
     @model_validator(mode="after")
-    def _idempotency_fallback_key_available(self) -> "PostCallWebhookRequest":
+    def _idempotency_fallback_key_available(self) -> PostCallWebhookRequest:
         # No hard requirement, but call_ended_at is used as a fallback
         # idempotency component when event_id is absent — document via model.
         return self

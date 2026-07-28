@@ -8,18 +8,19 @@ from __future__ import annotations
 
 import json
 from collections import Counter
-from datetime import date, datetime, time, timezone
+from datetime import UTC, date, datetime, time
 from typing import Any
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
+from pymongo.errors import DuplicateKeyError
 
 from app.models.call import CallRecord
 from app.repositories.base import CallFilters, CallRepository, Page
 
 
 def _day_bounds(day: date) -> tuple[datetime, datetime]:
-    start = datetime.combine(day, time.min, tzinfo=timezone.utc)
-    end = datetime.combine(day, time.max, tzinfo=timezone.utc)
+    start = datetime.combine(day, time.min, tzinfo=UTC)
+    end = datetime.combine(day, time.max, tzinfo=UTC)
     return start, end
 
 
@@ -138,6 +139,18 @@ class MongoCallRepository(CallRepository):
         docs = [doc async for doc in self._calls.find(query, {"_id": 0})]
         records = [CallRecord.model_validate(doc) for doc in docs]
         return _compute_stats(records)
+
+    async def try_claim_event_id(self, event_id: str) -> bool:
+        # The unique index on webhook_events.event_id makes this insert an
+        # atomic claim: exactly one concurrent duplicate delivery wins.
+        try:
+            await self._events.insert_one({"event_id": event_id})
+            return True
+        except DuplicateKeyError:
+            return False
+
+    async def release_event_id(self, event_id: str) -> None:
+        await self._events.delete_one({"event_id": event_id})
 
     async def event_id_seen(self, event_id: str) -> bool:
         doc = await self._events.find_one({"event_id": event_id})

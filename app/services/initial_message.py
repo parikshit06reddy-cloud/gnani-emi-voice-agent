@@ -52,31 +52,39 @@ def build_initial_message(
 ) -> str:
     """Build the dynamic opening message the bot will speak first.
 
-    Reveals only the last 4 digits of the loan account (never the full
-    account number, never any phone number) and always closes with an
+    Identity-first: reveals only the org/bot names and the last 4 digits of
+    the loan account (never the full account number, never the EMI amount or
+    due date, never any phone number) and always closes with an
     identity-confirmation question, per the "no sensitive disclosure before
-    identity confirmation" rule in the assignment brief.
+    identity confirmation" rule in the assignment brief. The EMI amount and
+    due date are only spoken in stage S3, after identity confirmation, driven
+    by the bot_variables injected below.
     """
-    first_name = _first_name(customer_name)
     account_last4 = _last4(loan_account_number)
-    formatted_date = _format_date(emi_due_date, language)
     bot_name = settings.BOT_NAME
     org_name = settings.ORG_NAME
 
+    # COMPLIANCE (identity gate): the opening message is spoken BEFORE anyone
+    # has confirmed their identity, so it must never contain the EMI amount,
+    # due date, balance, or full account number. Only the org/bot names and
+    # the loan's last-4 (a safe identifying hint per prompts/01) are allowed.
+    # The amount and due date are disclosed by the bot in conversation stage
+    # S3, strictly after identity confirmation (prompts/02, state S1 -> S3).
+    # `emi_amount`, `currency`, and `emi_due_date` remain parameters because
+    # they are injected into bot_variables for the post-verification stages —
+    # they are intentionally NOT interpolated into this string.
     if language == Language.ES_ES:
         return (
             f"Hola, mi nombre es {bot_name} y le llamo de parte de {org_name} "
-            f"en relación con el préstamo que termina en {account_last4}. "
-            f"Su cuota (EMI) de {emi_amount:.2f} {currency} venció el {formatted_date}. "
+            f"en relación con la cuenta de préstamo que termina en {account_last4}. "
             f"¿Podría confirmarme si hablo con {customer_name}?"
         )
 
-    # Default: en-US
+    # Default: en-US (also used as the fallback for languages without a template)
     return (
         f"Hello, this is {bot_name} calling from {org_name} regarding the loan "
-        f"account ending in {account_last4}. Your EMI of {emi_amount:.2f} {currency} "
-        f"was due on {formatted_date}. May I confirm whether I am speaking with "
-        f"{customer_name}?"
+        f"account ending in {account_last4}. May I confirm whether I am speaking "
+        f"with {customer_name}?"
     )
 
 
@@ -98,11 +106,17 @@ def build_bot_variables(
     phone number is intentionally never part of the bot_variables payload
     sent to the console.
     """
+    # Key names below match the injected-variable list declared in
+    # prompts/01-system-prompt.md verbatim (customer_name, loan_last4,
+    # emi_amount, currency, emi_due_date, preferred_language, org_name,
+    # bot_name, current_date, payment_link_hint, customer_id). The full
+    # loan_account_number and the raw phone number are intentionally NEVER
+    # transmitted to the console — the prompt only ever needs last-4.
     return {
         "customer_id": customer_id,
+        "customer_name": customer_name,
         "customer_first_name": _first_name(customer_name),
-        "customer_full_name": customer_name,
-        "loan_account_last4": _last4(loan_account_number),
+        "loan_last4": _last4(loan_account_number),
         "emi_amount": round(emi_amount, 2),
         "currency": currency,
         "emi_due_date": emi_due_date.isoformat(),
@@ -110,6 +124,8 @@ def build_bot_variables(
         "preferred_language": language.value,
         "org_name": settings.ORG_NAME,
         "bot_name": settings.BOT_NAME,
+        "current_date": date.today().isoformat(),
+        "payment_link_hint": settings.PAYMENT_LINK_HINT,
         "initial_message": initial_message,
         "asr_engine": settings.GNANI_ASR_MODEL,
         "tts_engine": settings.GNANI_TTS_MODEL,

@@ -9,8 +9,8 @@ derived from ``CallRecord``.
 
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
-from typing import Any, Literal
+from datetime import UTC, date, datetime
+from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -20,7 +20,7 @@ from app.models.util import mask_phone
 
 def utcnow() -> datetime:
     """Return a timezone-aware UTC ``datetime`` (helper for default factories)."""
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class CustomerInfo(BaseModel):
@@ -47,7 +47,7 @@ class CustomerInfo(BaseModel):
     @classmethod
     def from_raw(
         cls, customer_id: str, customer_name: str, phone_number: str, country_code: str
-    ) -> "CustomerInfo":
+    ) -> CustomerInfo:
         """Build a :class:`CustomerInfo` from raw (unmasked) input data."""
         return cls(
             customer_id=customer_id,
