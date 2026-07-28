@@ -18,6 +18,8 @@ COPY app ./app
 COPY scripts ./scripts
 COPY prompts ./prompts
 COPY gnani_config ./gnani_config
+# Sample call recordings served by the /recordings mount (RECORDINGS_DIR).
+COPY samples/recordings ./samples/recordings
 
 # Create a non-root user and a writable data directory for the JSON store.
 RUN useradd --create-home --shell /usr/sbin/nologin appuser \

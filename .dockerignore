@@ -10,9 +10,12 @@ __pycache__/
 .env
 data/
 docs/
-samples/
 postman/
 tests/
+# samples/ is NOT ignored: samples/recordings holds the three sample call
+# recordings served by the /recordings mount (RECORDINGS_DIR). Excluding it made
+# the dashboard audio player 404 in the container while working locally.
+samples/webhooks/
 *.md
 .DS_Store
 node_modules/
