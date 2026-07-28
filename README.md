@@ -158,7 +158,9 @@ by default — no Gnani credentials required to see the full lifecycle end-to-en
 The zero-dependency JSON-file storage default applies to Option B (local
 virtualenv) only.
 
-### Option B — Local virtualenv
+### Option B — Local virtualenv (no Docker required)
+
+macOS / Linux:
 
 ```bash
 python3 -m venv .venv
@@ -167,6 +169,28 @@ pip install -r requirements.txt
 cp .env.example .env
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
+
+Windows (PowerShell):
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+If PowerShell blocks the activate script, run
+`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` in that shell first.
+
+This path needs no Docker and no database — storage falls back to a JSON file, and
+`/health` will report `"repository":"json"`. Everything else behaves identically:
+all 12 mandatory scenarios, the dashboard, and the webhook lifecycle work unchanged.
+
+To exercise the MongoDB backend without installing Docker, point `MONGODB_URI` in
+`.env` at any reachable MongoDB (including a free hosted cluster) and restart —
+`/health` will then report `"repository":"mongo"`. No code or config changes are
+needed; the backend selects the repository from that one variable.
 
 ### `.env` setup
 
