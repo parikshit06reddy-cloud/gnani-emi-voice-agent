@@ -1,0 +1,1684 @@
+{
+  "generated_at": "2026-07-28T12:00:00+00:00",
+  "note": "Fixture data conforming to CONTRACT.md. Used only when ?demo=1 is present or the live API is unreachable.",
+  "stats": {
+    "total_calls": 12,
+    "completed_calls": 10,
+    "connected_calls": 9,
+    "ptp_calls": 4,
+    "already_paid_calls": 1,
+    "rtp_calls": 3,
+    "dispute_calls": 2,
+    "non_connect_calls": 3,
+    "callback_calls": 1,
+    "connect_rate": 0.75,
+    "ptp_rate": 0.33,
+    "by_stage_code": {
+      "PTP_TODAY": 1,
+      "PTP_TOMORROW": 1,
+      "PTP_FUTURE": 1,
+      "PTP_PARTIAL": 1,
+      "ALREADY_PAID": 1,
+      "CALLBACK_SCHEDULED": 1,
+      "RTP_FINANCIAL": 1,
+      "RTP_MEDICAL": 1,
+      "RTP_NO_REASON": 1,
+      "DISPUTE_CHARGES": 1,
+      "NO_LOAN": 1,
+      "RNR": 1
+    },
+    "by_language": {
+      "en-US": 7,
+      "es-ES": 3,
+      "mixed": 1,
+      "unknown": 1
+    },
+    "by_day": [
+      {
+        "date": "2026-07-26",
+        "calls": 4
+      },
+      {
+        "date": "2026-07-27",
+        "calls": 4
+      },
+      {
+        "date": "2026-07-28",
+        "calls": 4
+      }
+    ]
+  },
+  "calls": [
+    {
+      "call_id": "CALL-20260726-0001",
+      "customer": {
+        "customer_id": "CUST001",
+        "customer_name": "Marcus Whitfield",
+        "masked_phone_number": "******3210",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN123456",
+        "emi_amount": 1200.0,
+        "emi_due_date": "2026-07-25",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 96,
+      "call_duration_display": "01:36",
+      "stage_code": "PTP_TODAY",
+      "stage_group": "ptp",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer confirmed payment will be made today via UPI before 6 PM.",
+      "disposition_summary": "Customer acknowledged the overdue EMI, confirmed funds are available and committed to paying today.",
+      "ptp_date": "2026-07-26",
+      "ptp_amount": 1200.0,
+      "callback_datetime": null,
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "positive",
+      "confidence": 0.95,
+      "customer_verified": true,
+      "evidence_quote": "Yes, I'll pay it today itself, before evening.",
+      "recording_url": "https://cdn.example.com/recordings/CALL-20260726-0001.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN123456. Your EMI of $1200.00 was due on 2026-07-25.",
+      "call_initiated_at": "2026-07-26T09:00:00+00:00",
+      "call_started_at": "2026-07-26T09:00:04+00:00",
+      "call_completed_at": "2026-07-26T09:01:40+00:00",
+      "created_at": "2026-07-26T09:00:00+00:00",
+      "updated_at": "2026-07-26T09:01:41+00:00",
+      "call_request": {
+        "customer_id": "CUST001",
+        "customer_name": "Marcus Whitfield",
+        "phone_number": "******3210",
+        "country_code": "+1",
+        "loan_account_number": "LAN123456",
+        "emi_amount": 1200.0,
+        "emi_due_date": "2026-07-25",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260726-0001",
+        "gnani_call_reference": "gnani-9f3c1a",
+        "call_status": "initiated",
+        "created_at": "2026-07-26T09:00:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0001",
+        "call_id": "CALL-20260726-0001",
+        "call_status": "completed",
+        "call_duration_seconds": 96,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "PTP_TODAY",
+          "ptp_date": "2026-07-26",
+          "confidence": 0.95
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling from Apex Financial Services regarding your loan account ending 3456. Am I speaking with Marcus Whitfield?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T09:00:05+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Yes, this is Marcus.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T09:00:11+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "Thank you. Your EMI of $1200.00 was due on July 25th and is currently outstanding. Can you tell me when you plan to make this payment?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T09:00:18+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "Yes, I'll pay it today itself, before evening.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T09:00:30+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "Great, thank you for confirming. We'll expect the payment of $1200.00 today. Is there anything else I can help you with?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T09:00:40+00:00"
+        },
+        {
+          "turn": 6,
+          "speaker": "customer",
+          "text": "No, that's all. Thanks.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T09:00:48+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-26T09:00:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-26T09:00:04+00:00",
+          "actor": "gnani",
+          "action": "call_started",
+          "detail": "Outbound call connected"
+        },
+        {
+          "at": "2026-07-26T09:01:41+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to PTP_TODAY by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0001"
+      ]
+    },
+    {
+      "call_id": "CALL-20260726-0002",
+      "customer": {
+        "customer_id": "CUST002",
+        "customer_name": "Miguel Santos",
+        "masked_phone_number": "******6155",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN6155",
+        "emi_amount": 1200.0,
+        "emi_due_date": "2026-07-25",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 122,
+      "call_duration_display": "02:02",
+      "stage_code": "PTP_TOMORROW",
+      "stage_group": "ptp",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer switched to Spanish and committed to paying the full EMI tomorrow.",
+      "disposition_summary": "Customer requested to continue in Spanish and promised full payment on July 29th.",
+      "ptp_date": "2026-07-29",
+      "ptp_amount": 1200.0,
+      "callback_datetime": null,
+      "language_captured": "mixed",
+      "language_switched": true,
+      "sentiment": "positive",
+      "confidence": 0.88,
+      "customer_verified": true,
+      "evidence_quote": "Voy a pagar mañana sin falta",
+      "recording_url": "/recordings/CALL-SAMPLE-SWITCH-PTP-TOMORROW.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in 6155. May I confirm I am speaking with Miguel Santos?",
+      "call_initiated_at": "2026-07-26T10:15:00+00:00",
+      "call_started_at": "2026-07-26T10:15:06+00:00",
+      "call_completed_at": "2026-07-26T10:17:08+00:00",
+      "created_at": "2026-07-26T10:15:00+00:00",
+      "updated_at": "2026-07-26T10:17:09+00:00",
+      "call_request": {
+        "customer_id": "CUST002",
+        "customer_name": "Miguel Santos",
+        "phone_number": "******6155",
+        "country_code": "+1",
+        "loan_account_number": "LAN6155",
+        "emi_amount": 1200.0,
+        "emi_due_date": "2026-07-25",
+        "preferred_language": "English (US)",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260726-0002",
+        "gnani_call_reference": "gnani-7b21ee",
+        "call_status": "initiated",
+        "created_at": "2026-07-26T10:15:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0002",
+        "call_id": "CALL-20260726-0002",
+        "call_status": "completed",
+        "call_duration_seconds": 122,
+        "language_detected": "es-ES",
+        "disposition": {
+          "stage_code": "PTP_TOMORROW",
+          "ptp_date": "2026-07-27",
+          "confidence": 0.88
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in 6155. May I confirm I am speaking with Miguel Santos?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T10:15:08+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Speaking, yes.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T10:15:09+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "Thank you. I'm calling about your installment of one thousand two hundred dollars, which was due on July twenty fifth.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T10:15:10+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "Perdón, ¿podría continuar en español, por favor? Lo entiendo mucho mejor.",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:11+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "Claro que sí, continuamos en español. Su cuota de mil doscientos dólares venció el veinticinco de julio. ¿Podría realizar el pago hoy?",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:12+00:00"
+        },
+        {
+          "turn": 6,
+          "speaker": "customer",
+          "text": "Hoy no, pero mañana sí. Voy a pagar mañana sin falta.",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:13+00:00"
+        },
+        {
+          "turn": 7,
+          "speaker": "bot",
+          "text": "Muy bien. ¿Sería el monto completo de mil doscientos dólares mañana, veintinueve de julio?",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:14+00:00"
+        },
+        {
+          "turn": 8,
+          "speaker": "customer",
+          "text": "Sí, el monto completo.",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:15+00:00"
+        },
+        {
+          "turn": 9,
+          "speaker": "bot",
+          "text": "Perfecto, lo anoto. Usted pagará mil doscientos dólares el veintinueve de julio. ¿Es correcto?",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:16+00:00"
+        },
+        {
+          "turn": 10,
+          "speaker": "customer",
+          "text": "Correcto. ¿Algo más?",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:17+00:00"
+        },
+        {
+          "turn": 11,
+          "speaker": "bot",
+          "text": "Eso es todo. Gracias por su tiempo, señor Santos. Que tenga un buen día.",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:18+00:00"
+        },
+        {
+          "turn": 12,
+          "speaker": "customer",
+          "text": "Igualmente, gracias. Adiós.",
+          "language": "es-ES",
+          "timestamp": "2026-07-26T10:15:19+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-26T10:15:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-26T10:15:06+00:00",
+          "actor": "gnani",
+          "action": "call_started",
+          "detail": "Outbound call connected"
+        },
+        {
+          "at": "2026-07-26T10:17:09+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to PTP_TOMORROW by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0002"
+      ]
+    },
+    {
+      "call_id": "CALL-20260726-0003",
+      "customer": {
+        "customer_id": "CUST003",
+        "customer_name": "Marcus Whitfield",
+        "masked_phone_number": "******4417",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN4417",
+        "emi_amount": 968.0,
+        "emi_due_date": "2026-07-21",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 143,
+      "call_duration_display": "02:23",
+      "stage_code": "PTP_FUTURE",
+      "stage_group": "ptp",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer committed to a specific future payment date after his next payday.",
+      "disposition_summary": "Customer cannot pay today but committed to paying the full EMI on August 8th once he gets paid.",
+      "ptp_date": "2026-08-08",
+      "ptp_amount": 968.0,
+      "callback_datetime": null,
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "neutral",
+      "confidence": 0.91,
+      "customer_verified": true,
+      "evidence_quote": "I could do it on the eighth of August",
+      "recording_url": "/recordings/CALL-SAMPLE-EN-PTP-FUTURE.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in 4417. May I confirm I am speaking with Marcus Whitfield?",
+      "call_initiated_at": "2026-07-26T11:00:00+00:00",
+      "call_started_at": "2026-07-26T11:00:05+00:00",
+      "call_completed_at": "2026-07-26T11:02:28+00:00",
+      "created_at": "2026-07-26T11:00:00+00:00",
+      "updated_at": "2026-07-26T11:02:29+00:00",
+      "call_request": {
+        "customer_id": "CUST003",
+        "customer_name": "Marcus Whitfield",
+        "phone_number": "******4417",
+        "country_code": "+1",
+        "loan_account_number": "LAN4417",
+        "emi_amount": 968.0,
+        "emi_due_date": "2026-07-21",
+        "preferred_language": "English (US)",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260726-0003",
+        "gnani_call_reference": "gnani-1cde90",
+        "call_status": "initiated",
+        "created_at": "2026-07-26T11:00:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0003",
+        "call_id": "CALL-20260726-0003",
+        "call_status": "completed",
+        "call_duration_seconds": 143,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "PTP_FUTURE",
+          "ptp_date": "2026-07-30",
+          "confidence": 0.91
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in 4417. May I confirm I am speaking with Marcus Whitfield?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:08+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Yeah, this is Marcus.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:09+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "Thank you for confirming, Marcus. I'm calling about your monthly installment of nine hundred sixty eight dollars, which was due on July twenty first. Are you able to take care of that today?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:10+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "Not today, no. I just moved and things have been tight.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:11+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "I understand. Is there a date in the next couple of weeks when you would be able to make the payment?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:12+00:00"
+        },
+        {
+          "turn": 6,
+          "speaker": "customer",
+          "text": "I get paid on the seventh, so... I could do it on the eighth of August.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:13+00:00"
+        },
+        {
+          "turn": 7,
+          "speaker": "bot",
+          "text": "August eighth. And would that be the full nine hundred sixty eight dollars?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:14+00:00"
+        },
+        {
+          "turn": 8,
+          "speaker": "customer",
+          "text": "Yes, the full amount.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:15+00:00"
+        },
+        {
+          "turn": 9,
+          "speaker": "bot",
+          "text": "Perfect. So just to confirm, you will pay nine hundred sixty eight dollars on August eighth. Is that correct?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:16+00:00"
+        },
+        {
+          "turn": 10,
+          "speaker": "customer",
+          "text": "That's correct.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:17+00:00"
+        },
+        {
+          "turn": 11,
+          "speaker": "bot",
+          "text": "Thank you, Marcus. I've noted that down. You'll receive a reminder before the date. Have a good day.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:18+00:00"
+        },
+        {
+          "turn": 12,
+          "speaker": "customer",
+          "text": "Thanks. Bye.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T11:05:19+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-26T11:00:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-26T11:02:29+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to PTP_FUTURE by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0003"
+      ]
+    },
+    {
+      "call_id": "CALL-20260726-0004",
+      "customer": {
+        "customer_id": "CUST004",
+        "customer_name": "Priya Patel",
+        "masked_phone_number": "******9012",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN445566",
+        "emi_amount": 1500.0,
+        "emi_due_date": "2026-07-22",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 168,
+      "call_duration_display": "02:48",
+      "stage_code": "PTP_PARTIAL",
+      "stage_group": "ptp",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer can only pay half of the EMI now, remainder next cycle.",
+      "disposition_summary": "Customer requested a partial payment arrangement of $750 now and the remainder with next month's EMI.",
+      "ptp_date": "2026-07-28",
+      "ptp_amount": 750.0,
+      "callback_datetime": null,
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "neutral",
+      "confidence": 0.86,
+      "customer_verified": true,
+      "evidence_quote": "I can only manage $750 right now, I'll clear the rest with next month's EMI.",
+      "recording_url": "https://cdn.example.com/recordings/CALL-20260726-0004.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN445566.",
+      "call_initiated_at": "2026-07-26T12:30:00+00:00",
+      "call_started_at": "2026-07-26T12:30:05+00:00",
+      "call_completed_at": "2026-07-26T12:32:53+00:00",
+      "created_at": "2026-07-26T12:30:00+00:00",
+      "updated_at": "2026-07-26T12:32:54+00:00",
+      "call_request": {
+        "customer_id": "CUST004",
+        "customer_name": "Priya Patel",
+        "phone_number": "******9012",
+        "country_code": "+1",
+        "loan_account_number": "LAN445566",
+        "emi_amount": 1500.0,
+        "emi_due_date": "2026-07-22",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260726-0004",
+        "gnani_call_reference": "gnani-44a1bb",
+        "call_status": "initiated",
+        "created_at": "2026-07-26T12:30:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0004",
+        "call_id": "CALL-20260726-0004",
+        "call_status": "completed",
+        "call_duration_seconds": 168,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "PTP_PARTIAL",
+          "ptp_date": "2026-07-28",
+          "confidence": 0.86
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling about loan account ending 5566. Am I speaking with Priya Patel?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T12:30:06+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Yes, that's me.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T12:30:11+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "Your EMI of $1500.00 is overdue. Can you make the full payment soon?",
+          "language": "en-US",
+          "timestamp": "2026-07-26T12:30:19+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "I can only manage $750 right now, I'll clear the rest with next month's EMI.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T12:30:36+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "That works, we've logged a partial payment of $750 for July 28th. Thank you.",
+          "language": "en-US",
+          "timestamp": "2026-07-26T12:30:50+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-26T12:30:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-26T12:32:54+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to PTP_PARTIAL by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0004"
+      ]
+    },
+    {
+      "call_id": "CALL-20260727-0005",
+      "customer": {
+        "customer_id": "CUST005",
+        "customer_name": "Anjali Verma",
+        "masked_phone_number": "******6634",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN556677",
+        "emi_amount": 980.0,
+        "emi_due_date": "2026-07-21",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 74,
+      "call_duration_display": "01:14",
+      "stage_code": "ALREADY_PAID",
+      "stage_group": "already_paid",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer states EMI was already paid via auto-debit on the due date.",
+      "disposition_summary": "Customer provided a transaction reference and stated the amount was auto-debited on July 21.",
+      "ptp_date": null,
+      "ptp_amount": null,
+      "callback_datetime": null,
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "neutral",
+      "confidence": 0.9,
+      "customer_verified": true,
+      "evidence_quote": "I already paid, it was auto-debited on the 21st, check your records.",
+      "recording_url": "https://cdn.example.com/recordings/CALL-20260727-0005.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN556677.",
+      "call_initiated_at": "2026-07-27T08:45:00+00:00",
+      "call_started_at": "2026-07-27T08:45:05+00:00",
+      "call_completed_at": "2026-07-27T08:46:19+00:00",
+      "created_at": "2026-07-27T08:45:00+00:00",
+      "updated_at": "2026-07-27T08:46:20+00:00",
+      "call_request": {
+        "customer_id": "CUST005",
+        "customer_name": "Anjali Verma",
+        "phone_number": "******6634",
+        "country_code": "+1",
+        "loan_account_number": "LAN556677",
+        "emi_amount": 980.0,
+        "emi_due_date": "2026-07-21",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260727-0005",
+        "gnani_call_reference": "gnani-55cd11",
+        "call_status": "initiated",
+        "created_at": "2026-07-27T08:45:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0005",
+        "call_id": "CALL-20260727-0005",
+        "call_status": "completed",
+        "call_duration_seconds": 74,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "ALREADY_PAID",
+          "confidence": 0.9
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling about loan account ending 6677. Is this Anjali Verma?",
+          "language": "en-US",
+          "timestamp": "2026-07-27T08:45:06+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Yes.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T08:45:10+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "I'm calling regarding your EMI of $980.00 that appears overdue since July 21st.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T08:45:16+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "I already paid, it was auto-debited on the 21st, check your records.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T08:45:29+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "Thank you, we'll verify this with our records and update your account accordingly.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T08:45:40+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-27T08:45:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-27T08:46:20+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to ALREADY_PAID by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0005"
+      ]
+    },
+    {
+      "call_id": "CALL-20260727-0006",
+      "customer": {
+        "customer_id": "CUST006",
+        "customer_name": "James O'Brien",
+        "masked_phone_number": "******1290",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN667788",
+        "emi_amount": 1340.75,
+        "emi_due_date": "2026-07-19",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 91,
+      "call_duration_display": "01:31",
+      "stage_code": "CALLBACK_SCHEDULED",
+      "stage_group": "callback",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer requested a callback tomorrow evening as he is currently at work.",
+      "disposition_summary": "Customer asked to be contacted again at a specific time as he could not discuss finances right now.",
+      "ptp_date": null,
+      "ptp_amount": null,
+      "callback_datetime": "2026-07-28T19:00:00+00:00",
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "neutral",
+      "confidence": 0.84,
+      "customer_verified": true,
+      "evidence_quote": "Can you call me back tomorrow evening around 7? I'm at work right now.",
+      "recording_url": "https://cdn.example.com/recordings/CALL-20260727-0006.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN667788.",
+      "call_initiated_at": "2026-07-27T09:20:00+00:00",
+      "call_started_at": "2026-07-27T09:20:04+00:00",
+      "call_completed_at": "2026-07-27T09:21:35+00:00",
+      "created_at": "2026-07-27T09:20:00+00:00",
+      "updated_at": "2026-07-27T09:21:36+00:00",
+      "call_request": {
+        "customer_id": "CUST006",
+        "customer_name": "James O'Brien",
+        "phone_number": "******1290",
+        "country_code": "+1",
+        "loan_account_number": "LAN667788",
+        "emi_amount": 1340.75,
+        "emi_due_date": "2026-07-19",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260727-0006",
+        "gnani_call_reference": "gnani-66ef22",
+        "call_status": "initiated",
+        "created_at": "2026-07-27T09:20:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0006",
+        "call_id": "CALL-20260727-0006",
+        "call_status": "completed",
+        "call_duration_seconds": 91,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "CALLBACK_SCHEDULED",
+          "callback_datetime": "2026-07-28T19:00:00+00:00",
+          "confidence": 0.84
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria from Apex Financial Services calling about loan account ending 7788.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T09:20:05+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Yeah, who is this?",
+          "language": "en-US",
+          "timestamp": "2026-07-27T09:20:10+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "I'm calling about your overdue EMI of $1340.75. Do you have a moment to discuss it?",
+          "language": "en-US",
+          "timestamp": "2026-07-27T09:20:19+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "Can you call me back tomorrow evening around 7? I'm at work right now.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T09:20:31+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "Of course, we'll call back tomorrow at 7 PM. Thank you for your time.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T09:20:42+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-27T09:20:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-27T09:21:36+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to CALLBACK_SCHEDULED by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0006"
+      ]
+    },
+    {
+      "call_id": "CALL-20260727-0007",
+      "customer": {
+        "customer_id": "CUST007",
+        "customer_name": "Carmen Delgado",
+        "masked_phone_number": "******8302",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN8302",
+        "emi_amount": 519.99,
+        "emi_due_date": "2026-07-24",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 205,
+      "call_duration_display": "03:25",
+      "stage_code": "RTP_FINANCIAL",
+      "stage_group": "rtp",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer cites job loss and financial hardship.",
+      "disposition_summary": "Customer lost her job last month and cannot commit to a payment date; requested deferral options.",
+      "ptp_date": null,
+      "ptp_amount": null,
+      "callback_datetime": null,
+      "language_captured": "es-ES",
+      "language_switched": false,
+      "sentiment": "negative",
+      "confidence": 0.79,
+      "customer_verified": true,
+      "evidence_quote": "Perdí mi trabajo el mes pasado y ahora mismo no tengo ese dinero",
+      "recording_url": "/recordings/CALL-SAMPLE-ES-RTP-FINANCIAL.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Buenas tardes, le llama Aria de Apex Financial Services sobre la cuenta de préstamo que termina en 8302. ¿Hablo con Carmen Delgado?",
+      "call_initiated_at": "2026-07-27T10:05:00+00:00",
+      "call_started_at": "2026-07-27T10:05:05+00:00",
+      "call_completed_at": "2026-07-27T10:08:30+00:00",
+      "created_at": "2026-07-27T10:05:00+00:00",
+      "updated_at": "2026-07-27T10:08:31+00:00",
+      "call_request": {
+        "customer_id": "CUST007",
+        "customer_name": "Carmen Delgado",
+        "phone_number": "******8302",
+        "country_code": "+1",
+        "loan_account_number": "LAN8302",
+        "emi_amount": 519.99,
+        "emi_due_date": "2026-07-24",
+        "preferred_language": "Spanish",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260727-0007",
+        "gnani_call_reference": "gnani-77ab33",
+        "call_status": "initiated",
+        "created_at": "2026-07-27T10:05:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0007",
+        "call_id": "CALL-20260727-0007",
+        "call_status": "completed",
+        "call_duration_seconds": 205,
+        "language_detected": "mixed",
+        "disposition": {
+          "stage_code": "RTP_FINANCIAL",
+          "confidence": 0.79
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Buenas tardes, le llama Aria de Apex Financial Services sobre la cuenta de préstamo que termina en 8302. ¿Hablo con Carmen Delgado?",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:08+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Sí, soy Carmen.",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:09+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "Gracias por confirmar, Carmen. Le llamo por su cuota mensual de quinientos diecinueve dólares con noventa y nueve centavos, que venció el veinticuatro de julio. ¿Podría realizar el pago hoy?",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:10+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "No puedo. Perdí mi trabajo el mes pasado y ahora mismo no tengo ese dinero.",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:11+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "Lamento escuchar eso. ¿Tiene alguna idea de cuándo podría cambiar su situación?",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:12+00:00"
+        },
+        {
+          "turn": 6,
+          "speaker": "customer",
+          "text": "Estoy buscando trabajo, pero de verdad no puedo comprometerme a una fecha. No quiero prometer algo que no pueda cumplir.",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:13+00:00"
+        },
+        {
+          "turn": 7,
+          "speaker": "bot",
+          "text": "Entiendo, y le agradezco su honestidad. Voy a registrar que no puede pagar por dificultades económicas. ¿Le gustaría que le enviemos información sobre nuestras opciones de aplazamiento?",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:14+00:00"
+        },
+        {
+          "turn": 8,
+          "speaker": "customer",
+          "text": "Sí, por favor. Eso me ayudaría mucho.",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:15+00:00"
+        },
+        {
+          "turn": 9,
+          "speaker": "bot",
+          "text": "Perfecto. Nuestro equipo de servicio se pondrá en contacto con usted con esas opciones. Gracias por su tiempo, Carmen. Que tenga un buen día.",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:16+00:00"
+        },
+        {
+          "turn": 10,
+          "speaker": "customer",
+          "text": "Gracias a usted. Adiós.",
+          "language": "es-ES",
+          "timestamp": "2026-07-27T09:20:17+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-27T10:05:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-27T10:08:31+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to RTP_FINANCIAL by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0007"
+      ]
+    },
+    {
+      "call_id": "CALL-20260727-0008",
+      "customer": {
+        "customer_id": "CUST008",
+        "customer_name": "Robert Kim",
+        "masked_phone_number": "******4487",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN889900",
+        "emi_amount": 990.0,
+        "emi_due_date": "2026-07-17",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 187,
+      "call_duration_display": "03:07",
+      "stage_code": "RTP_MEDICAL",
+      "stage_group": "rtp",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer is hospitalized and unable to make the payment currently.",
+      "disposition_summary": "Customer described an ongoing medical emergency and requested more time before any commitment.",
+      "ptp_date": null,
+      "ptp_amount": null,
+      "callback_datetime": null,
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "negative",
+      "confidence": 0.82,
+      "customer_verified": true,
+      "evidence_quote": "I'm in the hospital right now, I can't deal with this at the moment.",
+      "recording_url": "https://cdn.example.com/recordings/CALL-20260727-0008.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN889900.",
+      "call_initiated_at": "2026-07-27T11:40:00+00:00",
+      "call_started_at": "2026-07-27T11:40:05+00:00",
+      "call_completed_at": "2026-07-27T11:43:12+00:00",
+      "created_at": "2026-07-27T11:40:00+00:00",
+      "updated_at": "2026-07-27T11:43:13+00:00",
+      "call_request": {
+        "customer_id": "CUST008",
+        "customer_name": "Robert Kim",
+        "phone_number": "******4487",
+        "country_code": "+1",
+        "loan_account_number": "LAN889900",
+        "emi_amount": 990.0,
+        "emi_due_date": "2026-07-17",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260727-0008",
+        "gnani_call_reference": "gnani-88bc44",
+        "call_status": "initiated",
+        "created_at": "2026-07-27T11:40:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0008",
+        "call_id": "CALL-20260727-0008",
+        "call_status": "completed",
+        "call_duration_seconds": 187,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "RTP_MEDICAL",
+          "confidence": 0.82
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling about loan account ending 9900. Is this Robert Kim?",
+          "language": "en-US",
+          "timestamp": "2026-07-27T11:40:06+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Yes... who is this?",
+          "language": "en-US",
+          "timestamp": "2026-07-27T11:40:13+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "I'm calling regarding your overdue EMI of $990.00. Can we discuss when you might be able to pay?",
+          "language": "en-US",
+          "timestamp": "2026-07-27T11:40:24+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "I'm in the hospital right now, I can't deal with this at the moment.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T11:40:39+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "I understand, I'm sorry to hear that. We'll note this and follow up at a better time.",
+          "language": "en-US",
+          "timestamp": "2026-07-27T11:40:53+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-27T11:40:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-27T11:43:13+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to RTP_MEDICAL by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0008"
+      ]
+    },
+    {
+      "call_id": "CALL-20260728-0009",
+      "customer": {
+        "customer_id": "CUST009",
+        "customer_name": "Karen Wallace",
+        "masked_phone_number": "******5521",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN990011",
+        "emi_amount": 1120.0,
+        "emi_due_date": "2026-07-15",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 66,
+      "call_duration_display": "01:06",
+      "stage_code": "RTP_NO_REASON",
+      "stage_group": "rtp",
+      "stage_code_source": "derived",
+      "disposition_reason": "Customer refused to pay and declined to provide any reason.",
+      "disposition_summary": "Customer flatly refused payment and ended the discussion without providing justification.",
+      "ptp_date": null,
+      "ptp_amount": null,
+      "callback_datetime": null,
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "negative",
+      "confidence": 0.68,
+      "customer_verified": false,
+      "evidence_quote": "I'm not paying, don't call me again.",
+      "recording_url": "https://cdn.example.com/recordings/CALL-20260728-0009.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN990011.",
+      "call_initiated_at": "2026-07-28T08:10:00+00:00",
+      "call_started_at": "2026-07-28T08:10:05+00:00",
+      "call_completed_at": "2026-07-28T08:11:11+00:00",
+      "created_at": "2026-07-28T08:10:00+00:00",
+      "updated_at": "2026-07-28T08:11:12+00:00",
+      "call_request": {
+        "customer_id": "CUST009",
+        "customer_name": "Karen Wallace",
+        "phone_number": "******5521",
+        "country_code": "+1",
+        "loan_account_number": "LAN990011",
+        "emi_amount": 1120.0,
+        "emi_due_date": "2026-07-15",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260728-0009",
+        "gnani_call_reference": "gnani-99cd55",
+        "call_status": "initiated",
+        "created_at": "2026-07-28T08:10:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0009",
+        "call_id": "CALL-20260728-0009",
+        "call_status": "completed",
+        "call_duration_seconds": 66,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "RTP_NO_REASON",
+          "confidence": 0.68
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling about loan account ending 0011. Is this Karen Wallace?",
+          "language": "en-US",
+          "timestamp": "2026-07-28T08:10:06+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Yeah.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T08:10:09+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "I'm calling about your overdue EMI of $1120.00. Can you make a payment soon?",
+          "language": "en-US",
+          "timestamp": "2026-07-28T08:10:16+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "I'm not paying, don't call me again.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T08:10:24+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "Understood, I'll note your response and end the call here.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T08:10:32+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-28T08:10:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-28T08:11:12+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Stage code derived (no explicit evidence quote met LLM threshold)"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0009"
+      ]
+    },
+    {
+      "call_id": "CALL-20260728-0010",
+      "customer": {
+        "customer_id": "CUST010",
+        "customer_name": "Thomas Meyer",
+        "masked_phone_number": "******6612",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN001122",
+        "emi_amount": 1400.0,
+        "emi_due_date": "2026-07-16",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 231,
+      "call_duration_display": "03:51",
+      "stage_code": "DISPUTE_CHARGES",
+      "stage_group": "dispute",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Customer disputes a late fee charge included in the EMI amount.",
+      "disposition_summary": "Customer challenged the late fee component, stating the payment was made within the grace period.",
+      "ptp_date": null,
+      "ptp_amount": null,
+      "callback_datetime": null,
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "negative",
+      "confidence": 0.87,
+      "customer_verified": true,
+      "evidence_quote": "This late fee is wrong, I paid within the grace period, I want it removed.",
+      "recording_url": "https://cdn.example.com/recordings/CALL-20260728-0010.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN001122.",
+      "call_initiated_at": "2026-07-28T09:25:00+00:00",
+      "call_started_at": "2026-07-28T09:25:05+00:00",
+      "call_completed_at": "2026-07-28T09:28:56+00:00",
+      "created_at": "2026-07-28T09:25:00+00:00",
+      "updated_at": "2026-07-28T09:28:57+00:00",
+      "call_request": {
+        "customer_id": "CUST010",
+        "customer_name": "Thomas Meyer",
+        "phone_number": "******6612",
+        "country_code": "+1",
+        "loan_account_number": "LAN001122",
+        "emi_amount": 1400.0,
+        "emi_due_date": "2026-07-16",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260728-0010",
+        "gnani_call_reference": "gnani-00de66",
+        "call_status": "initiated",
+        "created_at": "2026-07-28T09:25:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0010",
+        "call_id": "CALL-20260728-0010",
+        "call_status": "completed",
+        "call_duration_seconds": 231,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "DISPUTE_CHARGES",
+          "confidence": 0.87
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling about loan account ending 1122. Am I speaking with Thomas Meyer?",
+          "language": "en-US",
+          "timestamp": "2026-07-28T09:25:06+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "Yes, this is Thomas.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T09:25:11+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "I'm calling about your EMI of $1400.00, which includes a late fee for July.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T09:25:20+00:00"
+        },
+        {
+          "turn": 4,
+          "speaker": "customer",
+          "text": "This late fee is wrong, I paid within the grace period, I want it removed.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T09:25:38+00:00"
+        },
+        {
+          "turn": 5,
+          "speaker": "bot",
+          "text": "I've logged this dispute for review by our billing team. They'll follow up within 2 business days.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T09:25:55+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-28T09:25:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-28T09:28:57+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to DISPUTE_CHARGES by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0010"
+      ]
+    },
+    {
+      "call_id": "CALL-20260728-0011",
+      "customer": {
+        "customer_id": "CUST011",
+        "customer_name": "Unknown Recipient",
+        "masked_phone_number": "******7723",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN112233",
+        "emi_amount": 640.0,
+        "emi_due_date": "2026-07-14",
+        "currency": "USD"
+      },
+      "call_status": "completed",
+      "call_duration_seconds": 58,
+      "call_duration_display": "00:58",
+      "stage_code": "NO_LOAN",
+      "stage_group": "dispute",
+      "stage_code_source": "LLM",
+      "disposition_reason": "Recipient states they have no loan with this account number.",
+      "disposition_summary": "Person answering stated they never took a loan and this may be a wrong association of records.",
+      "ptp_date": null,
+      "ptp_amount": null,
+      "callback_datetime": null,
+      "language_captured": "en-US",
+      "language_switched": false,
+      "sentiment": "negative",
+      "confidence": 0.73,
+      "customer_verified": false,
+      "evidence_quote": "I don't have any loan with your company, you have the wrong person.",
+      "recording_url": "https://cdn.example.com/recordings/CALL-20260728-0011.mp3",
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN112233.",
+      "call_initiated_at": "2026-07-28T10:05:00+00:00",
+      "call_started_at": "2026-07-28T10:05:05+00:00",
+      "call_completed_at": "2026-07-28T10:06:03+00:00",
+      "created_at": "2026-07-28T10:05:00+00:00",
+      "updated_at": "2026-07-28T10:06:04+00:00",
+      "call_request": {
+        "customer_id": "CUST011",
+        "customer_name": "Unknown Recipient",
+        "phone_number": "******7723",
+        "country_code": "+1",
+        "loan_account_number": "LAN112233",
+        "emi_amount": 640.0,
+        "emi_due_date": "2026-07-14",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260728-0011",
+        "gnani_call_reference": "gnani-11ef77",
+        "call_status": "initiated",
+        "created_at": "2026-07-28T10:05:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0011",
+        "call_id": "CALL-20260728-0011",
+        "call_status": "completed",
+        "call_duration_seconds": 58,
+        "language_detected": "en-US",
+        "disposition": {
+          "stage_code": "NO_LOAN",
+          "confidence": 0.73
+        }
+      },
+      "conversation_transcript": [
+        {
+          "turn": 1,
+          "speaker": "bot",
+          "text": "Hello, this is Aria calling about loan account ending 2233. Is this the account holder?",
+          "language": "en-US",
+          "timestamp": "2026-07-28T10:05:06+00:00"
+        },
+        {
+          "turn": 2,
+          "speaker": "customer",
+          "text": "I don't have any loan with your company, you have the wrong person.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T10:05:18+00:00"
+        },
+        {
+          "turn": 3,
+          "speaker": "bot",
+          "text": "I apologize for the confusion. I'll flag this record for review. Thank you for letting us know.",
+          "language": "en-US",
+          "timestamp": "2026-07-28T10:05:30+00:00"
+        }
+      ],
+      "audit_log": [
+        {
+          "at": "2026-07-28T10:05:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-28T10:06:04+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "Disposition resolved to NO_LOAN by LLM"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0011"
+      ]
+    },
+    {
+      "call_id": "CALL-20260728-0012",
+      "customer": {
+        "customer_id": "CUST012",
+        "customer_name": "Grace Nguyen",
+        "masked_phone_number": "******8834",
+        "country_code": "+1"
+      },
+      "emi_details": {
+        "loan_account_number": "LAN223399",
+        "emi_amount": 1080.0,
+        "emi_due_date": "2026-07-23",
+        "currency": "USD"
+      },
+      "call_status": "no_answer",
+      "call_duration_seconds": 0,
+      "call_duration_display": "00:00",
+      "stage_code": "RNR",
+      "stage_group": "non_connect",
+      "stage_code_source": "fallback",
+      "disposition_reason": "Ring, no response after maximum ring duration.",
+      "disposition_summary": "Call rang for the configured duration without being answered by the customer.",
+      "ptp_date": null,
+      "ptp_amount": null,
+      "callback_datetime": null,
+      "language_captured": "unknown",
+      "language_switched": false,
+      "sentiment": null,
+      "confidence": 0.3,
+      "customer_verified": false,
+      "evidence_quote": null,
+      "recording_url": null,
+      "engines": {
+        "asr": "gnani-prisma",
+        "tts": "gnani-timbre-2.5",
+        "llm": "gnani-evon"
+      },
+      "initial_message": "Hello, this is Aria calling from Apex Financial Services regarding your loan account LAN223399.",
+      "call_initiated_at": "2026-07-28T11:00:00+00:00",
+      "call_started_at": null,
+      "call_completed_at": "2026-07-28T11:00:45+00:00",
+      "created_at": "2026-07-28T11:00:00+00:00",
+      "updated_at": "2026-07-28T11:00:46+00:00",
+      "call_request": {
+        "customer_id": "CUST012",
+        "customer_name": "Grace Nguyen",
+        "phone_number": "******8834",
+        "country_code": "+1",
+        "loan_account_number": "LAN223399",
+        "emi_amount": 1080.0,
+        "emi_due_date": "2026-07-23",
+        "preferred_language": "en-US",
+        "currency": "USD"
+      },
+      "gnani_console_response": {
+        "success": true,
+        "call_id": "CALL-20260728-0012",
+        "gnani_call_reference": "gnani-22ff88",
+        "call_status": "initiated",
+        "created_at": "2026-07-28T11:00:00+00:00"
+      },
+      "post_call_payload": {
+        "event_id": "evt-0012",
+        "call_id": "CALL-20260728-0012",
+        "call_status": "no_answer",
+        "call_duration_seconds": 0,
+        "language_detected": "unknown",
+        "disposition": {
+          "stage_code": "RNR",
+          "confidence": 0.3
+        }
+      },
+      "conversation_transcript": [],
+      "audit_log": [
+        {
+          "at": "2026-07-28T11:00:00+00:00",
+          "actor": "system",
+          "action": "call_created",
+          "detail": "Call queued via Initial_Message API"
+        },
+        {
+          "at": "2026-07-28T11:00:46+00:00",
+          "actor": "webhook",
+          "action": "post_call_received",
+          "detail": "No transcript captured; stage code set via fallback rule RNR"
+        }
+      ],
+      "webhook_event_ids": [
+        "evt-0012"
+      ]
+    }
+  ]
+}

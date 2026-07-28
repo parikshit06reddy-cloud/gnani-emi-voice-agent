@@ -1,0 +1,67 @@
+{
+  "event_id": "evt-sample-dispute-charges",
+  "call_id": "CALL-20260728-1007",
+  "gnani_call_reference": "gnani-evt-sample-dispute-charges",
+  "call_status": "completed",
+  "call_duration_seconds": 92,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1007.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "DISPUTE_CHARGES",
+    "disposition_reason": "Customer disputes a penalty charge added to the EMI amount.",
+    "disposition_summary": "Customer contests extra penalty/late fee added to this cycle's EMI.",
+    "confidence": 0.87,
+    "customer_verified": true,
+    "sentiment": "negative",
+    "evidence_quote": "you've charged me a penalty that shouldn't be there"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "Am I speaking with Rebecca Lindqvist regarding your EMI ending in 3456?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, but I have an issue with this bill.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "Please tell me more, I'd like to help resolve this.",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "This is the wrong amount — you've charged me a penalty that shouldn't be there.",
+      "language": "en-US"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "I understand. Can you clarify what amount you expected to be billed?",
+      "language": "en-US"
+    },
+    {
+      "turn": 6,
+      "speaker": "customer",
+      "text": "My EMI should be 350, not 385.50. I dispute the extra charges.",
+      "language": "en-US"
+    },
+    {
+      "turn": 7,
+      "speaker": "bot",
+      "text": "Understood, I've logged your dispute for our billing team to review.",
+      "language": "en-US"
+    }
+  ]
+}

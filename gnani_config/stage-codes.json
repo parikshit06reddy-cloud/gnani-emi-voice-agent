@@ -1,0 +1,232 @@
+{
+  "$schema": "https://app.gnani.ai/schemas/stage-code-catalogue/v1.json",
+  "version": "1.0",
+  "source_of_truth": "CONTRACT.md",
+  "cross_reference": "app/services/stage_code.py",
+  "groups": {
+    "ptp": ["PTP_TODAY", "PTP_TOMORROW", "PTP_FUTURE", "PTP_PARTIAL"],
+    "already_paid": ["ALREADY_PAID"],
+    "rtp": ["RTP_FINANCIAL", "RTP_MEDICAL", "RTP_NO_REASON"],
+    "dispute": ["DISPUTE_PAID", "DISPUTE_CHARGES", "NO_LOAN"],
+    "callback": ["CALLBACK_SCHEDULED"],
+    "non_connect": ["RNR", "VM", "BUSY", "WRONG_NUMBER", "DSCN"],
+    "other": ["THIRD_PARTY", "UNCLEAR"]
+  },
+  "stage_codes": [
+    {
+      "code": "PTP_TODAY",
+      "description": "Customer explicitly commits to paying the full EMI today.",
+      "group": "ptp",
+      "requires_ptp_date": true,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 10
+    },
+    {
+      "code": "PTP_TOMORROW",
+      "description": "Customer explicitly commits to paying the full EMI tomorrow.",
+      "group": "ptp",
+      "requires_ptp_date": true,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 10
+    },
+    {
+      "code": "PTP_FUTURE",
+      "description": "Customer provides a specific future payment date beyond tomorrow.",
+      "group": "ptp",
+      "requires_ptp_date": true,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 10
+    },
+    {
+      "code": "PTP_PARTIAL",
+      "description": "Customer commits to a partial payment, with an explicit amount.",
+      "group": "ptp",
+      "requires_ptp_date": true,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 11
+    },
+    {
+      "code": "ALREADY_PAID",
+      "description": "Customer explicitly states the EMI payment is already complete, with no dispute framing.",
+      "group": "already_paid",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 15
+    },
+    {
+      "code": "CALLBACK_SCHEDULED",
+      "description": "Customer requests a callback and provides a specific day/time window.",
+      "group": "callback",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": true,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 20
+    },
+    {
+      "code": "RTP_FINANCIAL",
+      "description": "Customer refuses or is unable to pay, citing a financial hardship reason (job loss, no money, income disruption).",
+      "group": "rtp",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 25
+    },
+    {
+      "code": "RTP_MEDICAL",
+      "description": "Customer is unable to pay, citing a medical reason (illness, hospitalization).",
+      "group": "rtp",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 25
+    },
+    {
+      "code": "RTP_NO_REASON",
+      "description": "Customer refuses to pay and gives no reason.",
+      "group": "rtp",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 30
+    },
+    {
+      "code": "DISPUTE_PAID",
+      "description": "Customer disputes the servicer's record, claiming payment is complete, with a correction/complaint framing.",
+      "group": "dispute",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 14
+    },
+    {
+      "code": "DISPUTE_CHARGES",
+      "description": "Customer disputes the EMI amount, fees, or penalty charges as incorrect.",
+      "group": "dispute",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 26
+    },
+    {
+      "code": "NO_LOAN",
+      "description": "Customer explicitly denies that this loan exists or belongs to them.",
+      "group": "dispute",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": true,
+      "priority": 27
+    },
+    {
+      "code": "WRONG_NUMBER",
+      "description": "The person answering explicitly denies any association between the borrower and this phone number.",
+      "group": "non_connect",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": false,
+      "is_commitment": false,
+      "priority": 40
+    },
+    {
+      "code": "THIRD_PARTY",
+      "description": "A person other than the borrower answers and confirms the borrower is a real, reachable person.",
+      "group": "other",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": false,
+      "priority": 41
+    },
+    {
+      "code": "BUSY",
+      "description": "Customer states they cannot talk now and gives no callback time.",
+      "group": "non_connect",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": true,
+      "is_connect": true,
+      "is_commitment": false,
+      "priority": 45
+    },
+    {
+      "code": "RNR",
+      "description": "Ring/no response equivalent — call connects but the customer never speaks (zero customer turns).",
+      "group": "non_connect",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": false,
+      "is_connect": false,
+      "is_commitment": false,
+      "priority": 90
+    },
+    {
+      "code": "VM",
+      "description": "Voicemail greeting detected instead of a live person.",
+      "group": "non_connect",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": false,
+      "is_connect": false,
+      "is_commitment": false,
+      "priority": 91
+    },
+    {
+      "code": "DSCN",
+      "description": "Call disconnects abruptly mid-conversation (at least one customer turn occurred) before a decidable outcome is reached.",
+      "group": "non_connect",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": false,
+      "is_connect": true,
+      "is_commitment": false,
+      "priority": 95
+    },
+    {
+      "code": "UNCLEAR",
+      "description": "A substantive conversation occurred but the outcome cannot be reliably mapped to any other code; also the mandatory fallback when evidence is missing or contradictory.",
+      "group": "other",
+      "requires_ptp_date": false,
+      "requires_callback_datetime": false,
+      "requires_evidence": false,
+      "is_connect": true,
+      "is_commitment": false,
+      "priority": 99
+    }
+  ],
+  "notes": {
+    "priority": "Lower number = more specific/preferred when the analytics prompt's proposed code and the deterministic validator disagree, or when two codes both have supporting evidence in the same transcript. Ties are broken by the explicit rules in prompts/03-analytics-prompt.md and documented further in docs/stage-code-logic.md. Non-connect and fallback codes intentionally carry the highest priority numbers because they should only be chosen when no more specific, evidenced code applies.",
+    "requires_evidence": "If true, app/services/stage_code.py requires a non-null evidence_quote that is a verbatim substring of a customer transcript turn; failing this check downgrades the code (see docs/stage-code-logic.md).",
+    "is_connect": "True if the call is counted toward 'connected_calls' in GET /api/v1/stats.",
+    "is_commitment": "True if the code represents a customer commitment/position requiring evidence-backed capture, as opposed to a pure call-outcome/technical code (RNR, VM, DSCN, UNCLEAR)."
+  }
+}

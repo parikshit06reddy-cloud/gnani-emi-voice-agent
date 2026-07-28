@@ -1,0 +1,37 @@
+{
+  "event_id": "evt-sample-voicemail",
+  "call_id": "CALL-20260728-1014",
+  "gnani_call_reference": "gnani-evt-sample-voicemail",
+  "call_status": "completed",
+  "call_duration_seconds": 22,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1014.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "VM",
+    "disposition_reason": "Call was answered by voicemail; bot left a callback message.",
+    "disposition_summary": "Voicemail detected, automated message left requesting a callback.",
+    "confidence": 0.75,
+    "customer_verified": null,
+    "sentiment": "unknown",
+    "evidence_quote": "you have reached the voicemail of"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "You have reached the voicemail of Derek Holloway. Please leave a message after the tone.",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "bot",
+      "text": "Hello, this message is for Derek Holloway from Apex Financial Services regarding your EMI. Please call us back at your earliest convenience.",
+      "language": "en-US"
+    }
+  ]
+}

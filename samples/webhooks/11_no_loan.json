@@ -1,0 +1,55 @@
+{
+  "event_id": "evt-sample-no-loan",
+  "call_id": "CALL-20260728-1011",
+  "gnani_call_reference": "gnani-evt-sample-no-loan",
+  "call_status": "completed",
+  "call_duration_seconds": 92,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1011.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "NO_LOAN",
+    "disposition_reason": "Customer confirms identity but denies having any loan or EMI with this organisation.",
+    "disposition_summary": "Verified customer states they have no active loan with Apex Financial Services.",
+    "confidence": 0.84,
+    "customer_verified": true,
+    "sentiment": "negative",
+    "evidence_quote": "I don't have any loan with your company, I've never borrowed from you"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "May I confirm I'm speaking with Jonathan Pike?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, this is Jonathan.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "This is regarding your EMI on loan account ending in 3456 with Apex Financial Services.",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "I don't have any loan with your company, I've never borrowed from you. This must be an error.",
+      "language": "en-US"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "I apologize, I'll flag this account for review. Thank you for letting us know.",
+      "language": "en-US"
+    }
+  ]
+}

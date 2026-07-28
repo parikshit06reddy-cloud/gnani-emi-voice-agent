@@ -1,0 +1,1251 @@
+{
+  "info": {
+    "_postman_id": "efc50ad7-3451-4ead-9a49-85bda4c01120",
+    "name": "Gnani EMI Voice Agent",
+    "description": "Full API collection for the Gnani Agents Console EMI-collections outbound voice agent backend. Covers all endpoints from CONTRACT.md plus example request bodies for all 12 mandatory demo scenarios. Import postman/environment.json alongside this collection and set `base_url`, `api_key`, `webhook_key`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Core",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Unauthenticated liveness/readiness check."
+          },
+          "response": []
+        },
+        {
+          "name": "Public config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/config",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "config"
+              ]
+            },
+            "description": "Returns {\"api_key_required\": true}. Never leaks the actual key."
+          },
+          "response": []
+        },
+        {
+          "name": "List calls",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/calls?page=1&page_size=25&sort_by=created_at&sort_dir=desc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "calls"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "25"
+                },
+                {
+                  "key": "sort_by",
+                  "value": "created_at"
+                },
+                {
+                  "key": "sort_dir",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Paginated call list with optional filters: call_date, date_from, date_to, call_status, stage_code, stage_group, customer_id, loan_account_number, language, ptp_date, q."
+          },
+          "response": []
+        },
+        {
+          "name": "List calls - filter by stage_code",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/calls?stage_code=PTP_TODAY&page=1&page_size=25",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "calls"
+              ],
+              "query": [
+                {
+                  "key": "stage_code",
+                  "value": "PTP_TODAY"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "25"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Get call detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/calls/{{call_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "calls",
+                "{{call_id}}"
+              ]
+            },
+            "description": "Full CallDetail for a single call_id. 404 CALL_NOT_FOUND if missing."
+          },
+          "response": []
+        },
+        {
+          "name": "Get stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats"
+              ]
+            },
+            "description": "Aggregate stats. Accepts the same filters as List calls."
+          },
+          "response": []
+        },
+        {
+          "name": "Initiate call - happy path template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "Generic happy-path template for POST /api/Initial_Message.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST001\",\n  \"customer_name\": \"Marcus Whitfield\",\n  \"phone_number\": \"987653210\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN3210\",\n  \"emi_amount\": 1200.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post-call webhook - happy path template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "Generic happy-path template for POST /api/v1/webhooks/post-call.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-001\",\n  \"call_id\": \"CALL-20260728-0001\",\n  \"gnani_call_reference\": \"gnani-evt-001\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0001.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"PTP_FUTURE\",\n    \"disposition_reason\": \"Customer said 'I will pay on the 30th'.\",\n    \"disposition_summary\": \"Customer confirmed identity and promised payment by month end.\",\n    \"ptp_date\": \"2026-07-30\",\n    \"ptp_amount\": 1200.0,\n    \"confidence\": 0.93,\n    \"customer_verified\": true,\n    \"sentiment\": \"neutral\",\n    \"evidence_quote\": \"I will pay on the 30th\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"Hello, may I confirm I'm speaking with Marcus Whitfield?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"S\\u00ed, soy yo.\",\n      \"language\": \"es-ES\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "12 Mandatory Scenarios",
+      "item": [
+        {
+          "name": "Scenario 1 - Initiate: PTP today",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "Initiate a call for a customer who will later promise to pay today.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM01\",\n  \"customer_name\": \"Marcus Whitfield\",\n  \"phone_number\": \"98765100001\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN100001\",\n  \"emi_amount\": 1200.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 1 - Webhook: PTP today",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-01\",\n  \"call_id\": \"CALL-20260728-0001\",\n  \"gnani_call_reference\": \"gnani-evt-pm-01\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0001.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"PTP_TODAY\",\n    \"disposition_reason\": \"Customer explicitly committed to paying today.\",\n    \"disposition_summary\": \"Customer confirmed identity and promised full payment today.\",\n    \"ptp_date\": \"2026-07-28\",\n    \"ptp_amount\": 1200.0,\n    \"confidence\": 0.95,\n    \"customer_verified\": true,\n    \"sentiment\": \"positive\",\n    \"evidence_quote\": \"I will pay it today, no problem\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"Hello, may I confirm I'm speaking with Marcus Whitfield regarding your loan ending in 3456?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, this is Marcus speaking.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"Your EMI of 1200.00 USD was due on July 25, 2026. Are you able to make the payment?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"Oh yes, I forgot. Let me pay it right now.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 5,\n      \"speaker\": \"bot\",\n      \"text\": \"So you will pay the full amount today?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 6,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, I will pay it today, no problem.\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 2 - Initiate: Future PTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM02\",\n  \"customer_name\": \"Marcus Whitfield\",\n  \"phone_number\": \"98765100002\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN4417\",\n  \"emi_amount\": 968.0,\n  \"emi_due_date\": \"2026-07-21\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 2 - Webhook: Future PTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-02\",\n  \"call_id\": \"CALL-20260728-0002\",\n  \"gnani_call_reference\": \"gnani-evt-pm-02\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-SAMPLE-EN-PTP-FUTURE.mp3\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"PTP_FUTURE\",\n    \"disposition_reason\": \"Customer committed to a specific future payment date after his next payday.\",\n    \"disposition_summary\": \"Customer cannot pay today but committed to paying the full EMI on August 8th once he gets paid.\",\n    \"ptp_date\": \"2026-08-08\",\n    \"ptp_amount\": 968.0,\n    \"confidence\": 0.9,\n    \"customer_verified\": true,\n    \"sentiment\": \"neutral\",\n    \"evidence_quote\": \"I could do it on the eighth of August\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in 4417. May I confirm I am speaking with Marcus Whitfield?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Yeah, this is Marcus.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"Thank you for confirming, Marcus. I'm calling about your monthly installment of nine hundred sixty eight dollars, which was due on July twenty first. Are you able to take care of that today?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"Not today, no. I just moved and things have been tight.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 5,\n      \"speaker\": \"bot\",\n      \"text\": \"I understand. Is there a date in the next couple of weeks when you would be able to make the payment?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 6,\n      \"speaker\": \"customer\",\n      \"text\": \"I get paid on the seventh, so... I could do it on the eighth of August.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 7,\n      \"speaker\": \"bot\",\n      \"text\": \"August eighth. And would that be the full nine hundred sixty eight dollars?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 8,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, the full amount.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 9,\n      \"speaker\": \"bot\",\n      \"text\": \"Perfect. So just to confirm, you will pay nine hundred sixty eight dollars on August eighth. Is that correct?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 10,\n      \"speaker\": \"customer\",\n      \"text\": \"That's correct.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 11,\n      \"speaker\": \"bot\",\n      \"text\": \"Thank you, Marcus. I've noted that down. You'll receive a reminder before the date. Have a good day.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 12,\n      \"speaker\": \"customer\",\n      \"text\": \"Thanks. Bye.\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 3 - Initiate: Already paid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM03\",\n  \"customer_name\": \"Priya Raghunathan\",\n  \"phone_number\": \"98765100003\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN100003\",\n  \"emi_amount\": 968.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 3 - Webhook: Already paid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-03\",\n  \"call_id\": \"CALL-20260728-0003\",\n  \"gnani_call_reference\": \"gnani-evt-pm-03\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0003.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"ALREADY_PAID\",\n    \"disposition_reason\": \"Customer states the EMI was already paid two days ago.\",\n    \"disposition_summary\": \"Customer claims payment already made; pending verification.\",\n    \"confidence\": 0.85,\n    \"customer_verified\": true,\n    \"sentiment\": \"neutral\",\n    \"evidence_quote\": \"I already paid this EMI two days ago online\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"May I confirm I'm speaking with Priya Raghunathan about the loan ending in 3456?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, speaking.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"Your EMI of 968.00 USD was due on July 25. Have you made this payment?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes actually, I already paid this EMI two days ago online.\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 4 - Initiate: Callback requested",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM04\",\n  \"customer_name\": \"Daniel O'Sullivan\",\n  \"phone_number\": \"98765100004\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN100004\",\n  \"emi_amount\": 1875.5,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 4 - Webhook: Callback requested",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-04\",\n  \"call_id\": \"CALL-20260728-0004\",\n  \"gnani_call_reference\": \"gnani-evt-pm-04\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0004.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"CALLBACK_SCHEDULED\",\n    \"disposition_reason\": \"Customer requested a callback at a specific time tomorrow.\",\n    \"disposition_summary\": \"Customer busy, requested callback tomorrow at 5pm.\",\n    \"callback_datetime\": \"2026-07-29T17:00:00+00:00\",\n    \"confidence\": 0.88,\n    \"customer_verified\": true,\n    \"sentiment\": \"neutral\",\n    \"evidence_quote\": \"Please call me back tomorrow at 5pm\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"Am I speaking with Daniel O'Sullivan about your EMI?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, but I'm in a meeting right now.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"I understand, this will be quick. Can I proceed?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"No, I really can't talk now. Please call me back tomorrow at 5pm.\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 5 - Initiate: RTP financial hardship",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM05\",\n  \"customer_name\": \"Carmen Delgado\",\n  \"phone_number\": \"98765100005\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN8302\",\n  \"emi_amount\": 519.99,\n  \"emi_due_date\": \"2026-07-24\",\n  \"preferred_language\": \"Spanish\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 5 - Webhook: RTP financial hardship",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-05\",\n  \"call_id\": \"CALL-20260728-0005\",\n  \"gnani_call_reference\": \"gnani-evt-pm-05\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-SAMPLE-ES-RTP-FINANCIAL.mp3\",\n  \"language_detected\": \"es-ES\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"RTP_FINANCIAL\",\n    \"disposition_reason\": \"Customer cites job loss and financial hardship.\",\n    \"disposition_summary\": \"Customer lost her job last month and cannot commit to a payment date; requested deferral options.\",\n    \"confidence\": 0.9,\n    \"customer_verified\": true,\n    \"sentiment\": \"negative\",\n    \"evidence_quote\": \"Perd\\u00ed mi trabajo el mes pasado y ahora mismo no tengo ese dinero\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"Buenas tardes, le llama Aria de Apex Financial Services sobre la cuenta de pr\\u00e9stamo que termina en 8302. \\u00bfHablo con Carmen Delgado?\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"S\\u00ed, soy Carmen.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"Gracias por confirmar, Carmen. Le llamo por su cuota mensual de quinientos diecinueve d\\u00f3lares con noventa y nueve centavos, que venci\\u00f3 el veinticuatro de julio. \\u00bfPodr\\u00eda realizar el pago hoy?\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"No puedo. Perd\\u00ed mi trabajo el mes pasado y ahora mismo no tengo ese dinero.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 5,\n      \"speaker\": \"bot\",\n      \"text\": \"Lamento escuchar eso. \\u00bfTiene alguna idea de cu\\u00e1ndo podr\\u00eda cambiar su situaci\\u00f3n?\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 6,\n      \"speaker\": \"customer\",\n      \"text\": \"Estoy buscando trabajo, pero de verdad no puedo comprometerme a una fecha. No quiero prometer algo que no pueda cumplir.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 7,\n      \"speaker\": \"bot\",\n      \"text\": \"Entiendo, y le agradezco su honestidad. Voy a registrar que no puede pagar por dificultades econ\\u00f3micas. \\u00bfLe gustar\\u00eda que le enviemos informaci\\u00f3n sobre nuestras opciones de aplazamiento?\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 8,\n      \"speaker\": \"customer\",\n      \"text\": \"S\\u00ed, por favor. Eso me ayudar\\u00eda mucho.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 9,\n      \"speaker\": \"bot\",\n      \"text\": \"Perfecto. Nuestro equipo de servicio se pondr\\u00e1 en contacto con usted con esas opciones. Gracias por su tiempo, Carmen. Que tenga un buen d\\u00eda.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 10,\n      \"speaker\": \"customer\",\n      \"text\": \"Gracias a usted. Adi\\u00f3s.\",\n      \"language\": \"es-ES\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 6 - Initiate: Dispute EMI amount",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM06\",\n  \"customer_name\": \"Tyrone Jackson\",\n  \"phone_number\": \"98765100006\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN100006\",\n  \"emi_amount\": 2150.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 6 - Webhook: Dispute EMI amount",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-06\",\n  \"call_id\": \"CALL-20260728-0006\",\n  \"gnani_call_reference\": \"gnani-evt-pm-06\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0006.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"DISPUTE_CHARGES\",\n    \"disposition_reason\": \"Customer disputes penalty charges added to the EMI amount.\",\n    \"disposition_summary\": \"Customer contests extra penalty charges on the EMI.\",\n    \"confidence\": 0.87,\n    \"customer_verified\": true,\n    \"sentiment\": \"negative\",\n    \"evidence_quote\": \"you've charged me a penalty that shouldn't be there\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"Am I speaking with Tyrone Jackson regarding your EMI ending in 3456?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, but I have an issue with this bill.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"Please tell me more, I'd like to help.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"This is the wrong amount, you've charged me a penalty that shouldn't be there.\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 7 - Initiate: Third party answers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM07\",\n  \"customer_name\": \"Rebecca Lindqvist\",\n  \"phone_number\": \"98765100007\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN100007\",\n  \"emi_amount\": 385.5,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 7 - Webhook: Third party answers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-07\",\n  \"call_id\": \"CALL-20260728-0007\",\n  \"gnani_call_reference\": \"gnani-evt-pm-07\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0007.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"THIRD_PARTY\",\n    \"disposition_reason\": \"Someone other than the borrower answered; borrower reachable later.\",\n    \"disposition_summary\": \"Borrower's brother answered, borrower reachable this evening.\",\n    \"confidence\": 0.82,\n    \"customer_verified\": false,\n    \"sentiment\": \"neutral\",\n    \"evidence_quote\": \"this is her brother. She's not here right now\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"May I confirm I'm speaking with Rebecca Lindqvist?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"No, this is her brother. She's not here right now.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"I see, do you know when she'll be available?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"She should be back this evening, I can pass a message.\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 8 - Initiate: Language switch mid-call",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM08\",\n  \"customer_name\": \"Miguel Santos\",\n  \"phone_number\": \"98765100008\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN6155\",\n  \"emi_amount\": 1200.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 8 - Webhook: Language switch mid-call (bilingual)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-08\",\n  \"call_id\": \"CALL-20260728-0008\",\n  \"gnani_call_reference\": \"gnani-evt-pm-08\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-SAMPLE-SWITCH-PTP-TOMORROW.mp3\",\n  \"language_detected\": \"mixed\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"PTP_TOMORROW\",\n    \"disposition_reason\": \"Customer switched to Spanish and committed to paying the full EMI tomorrow.\",\n    \"disposition_summary\": \"Customer requested to continue in Spanish and promised full payment on July 29th.\",\n    \"ptp_date\": \"2026-07-29\",\n    \"ptp_amount\": 1200.0,\n    \"confidence\": 0.9,\n    \"customer_verified\": true,\n    \"sentiment\": \"positive\",\n    \"evidence_quote\": \"Voy a pagar ma\\u00f1ana sin falta\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in 6155. May I confirm I am speaking with Miguel Santos?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Speaking, yes.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"Thank you. I'm calling about your installment of one thousand two hundred dollars, which was due on July twenty fifth.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"Perd\\u00f3n, \\u00bfpodr\\u00eda continuar en espa\\u00f1ol, por favor? Lo entiendo mucho mejor.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 5,\n      \"speaker\": \"bot\",\n      \"text\": \"Claro que s\\u00ed, continuamos en espa\\u00f1ol. Su cuota de mil doscientos d\\u00f3lares venci\\u00f3 el veinticinco de julio. \\u00bfPodr\\u00eda realizar el pago hoy?\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 6,\n      \"speaker\": \"customer\",\n      \"text\": \"Hoy no, pero ma\\u00f1ana s\\u00ed. Voy a pagar ma\\u00f1ana sin falta.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 7,\n      \"speaker\": \"bot\",\n      \"text\": \"Muy bien. \\u00bfSer\\u00eda el monto completo de mil doscientos d\\u00f3lares ma\\u00f1ana, veintinueve de julio?\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 8,\n      \"speaker\": \"customer\",\n      \"text\": \"S\\u00ed, el monto completo.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 9,\n      \"speaker\": \"bot\",\n      \"text\": \"Perfecto, lo anoto. Usted pagar\\u00e1 mil doscientos d\\u00f3lares el veintinueve de julio. \\u00bfEs correcto?\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 10,\n      \"speaker\": \"customer\",\n      \"text\": \"Correcto. \\u00bfAlgo m\\u00e1s?\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 11,\n      \"speaker\": \"bot\",\n      \"text\": \"Eso es todo. Gracias por su tiempo, se\\u00f1or Santos. Que tenga un buen d\\u00eda.\",\n      \"language\": \"es-ES\"\n    },\n    {\n      \"turn\": 12,\n      \"speaker\": \"customer\",\n      \"text\": \"Igualmente, gracias. Adi\\u00f3s.\",\n      \"language\": \"es-ES\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 9 - Initiate: Disconnect, no clear disposition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM09\",\n  \"customer_name\": \"Aisha Bello\",\n  \"phone_number\": \"98765100009\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN100009\",\n  \"emi_amount\": 630.75,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 9 - Webhook: Disconnect, no clear disposition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-09\",\n  \"call_id\": \"CALL-20260728-0009\",\n  \"gnani_call_reference\": \"gnani-evt-pm-09\",\n  \"call_status\": \"failed\",\n  \"call_duration_seconds\": 8,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0009.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": null,\n    \"disposition_reason\": \"Call dropped shortly after connecting.\",\n    \"disposition_summary\": \"The call was disconnected before any disposition could be captured.\",\n    \"confidence\": 0.0,\n    \"customer_verified\": null,\n    \"sentiment\": \"unknown\",\n    \"evidence_quote\": null\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"Hello, may I confirm I'm speaking with Aisha Bello?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, this is\\u2014\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 10 - Initiate: Duplicate webhook setup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM10\",\n  \"customer_name\": \"Jonathan Pike\",\n  \"phone_number\": \"98765100010\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN100010\",\n  \"emi_amount\": 1440.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 10 - Webhook: First delivery (duplicate=false expected)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "First delivery of this event_id. Response should have duplicate=false.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-10-duplicate\",\n  \"call_id\": \"CALL-20260728-0010\",\n  \"gnani_call_reference\": \"gnani-evt-pm-10-duplicate\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0010.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"PTP_TODAY\",\n    \"disposition_reason\": \"Customer committed to paying today.\",\n    \"ptp_date\": \"2026-07-28\",\n    \"confidence\": 0.92,\n    \"customer_verified\": true,\n    \"sentiment\": \"positive\",\n    \"evidence_quote\": \"I will pay today\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"May I confirm I'm speaking with Jonathan Pike?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, speaking.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"Your EMI of 1440.00 USD was due on July 25. Can you pay today?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, I will pay today.\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 10 - Webhook: Replay (duplicate=true expected)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Webhook-Key",
+                "value": "{{webhook_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/webhooks/post-call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "post-call"
+              ]
+            },
+            "description": "Exact replay with the same event_id. Response should have duplicate=true and cause no state change.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-pm-10-duplicate\",\n  \"call_id\": \"CALL-20260728-0010\",\n  \"gnani_call_reference\": \"gnani-evt-pm-10-duplicate\",\n  \"call_status\": \"completed\",\n  \"call_duration_seconds\": 95,\n  \"call_started_at\": \"2026-07-28T12:00:00+00:00\",\n  \"call_ended_at\": \"2026-07-28T12:01:35+00:00\",\n  \"recording_url\": \"/recordings/CALL-20260728-0010.wav\",\n  \"language_detected\": \"en-US\",\n  \"asr_engine\": \"gnani-prisma\",\n  \"tts_engine\": \"gnani-timbre-2.5\",\n  \"llm_engine\": \"gnani-evon\",\n  \"disposition\": {\n    \"stage_code\": \"PTP_TODAY\",\n    \"disposition_reason\": \"Customer committed to paying today.\",\n    \"ptp_date\": \"2026-07-28\",\n    \"confidence\": 0.92,\n    \"customer_verified\": true,\n    \"sentiment\": \"positive\",\n    \"evidence_quote\": \"I will pay today\"\n  },\n  \"transcript\": [\n    {\n      \"turn\": 1,\n      \"speaker\": \"bot\",\n      \"text\": \"May I confirm I'm speaking with Jonathan Pike?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 2,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, speaking.\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 3,\n      \"speaker\": \"bot\",\n      \"text\": \"Your EMI of 1440.00 USD was due on July 25. Can you pay today?\",\n      \"language\": \"en-US\"\n    },\n    {\n      \"turn\": 4,\n      \"speaker\": \"customer\",\n      \"text\": \"Yes, I will pay today.\",\n      \"language\": \"en-US\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 11 - Initiate: Invalid request (expect 422)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "phone_number is too short (must be 7-15 digits). Expect HTTP 422 with VALIDATION_ERROR envelope and field_errors.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM11\",\n  \"customer_name\": \"Lucia Herrera\",\n  \"phone_number\": \"123\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN100011\",\n  \"emi_amount\": 1200.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"Spanish\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 12a - Initiate: Injected Gnani timeout (phone ends 0000)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "Mock mode: phone numbers ending in 0000 simulate a Gnani call-trigger timeout. Expect HTTP 504 GNANI_TIMEOUT.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM12A\",\n  \"customer_name\": \"Nathan Brooks\",\n  \"phone_number\": \"98765500000\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN500000\",\n  \"emi_amount\": 1200.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scenario 12b - Initiate: Injected Gnani 5xx failure (phone ends 9999)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/Initial_Message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "Initial_Message"
+              ]
+            },
+            "description": "Mock mode: phone numbers ending in 9999 simulate a persistent Gnani 5xx failure. Expect HTTP 502 GNANI_TRIGGER_FAILED.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"CUST-PM12B\",\n  \"customer_name\": \"Nathan Brooks\",\n  \"phone_number\": \"98765509999\",\n  \"country_code\": \"+1\",\n  \"loan_account_number\": \"LAN509999\",\n  \"emi_amount\": 1200.0,\n  \"emi_due_date\": \"2026-07-25\",\n  \"preferred_language\": \"English (US)\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "api_key",
+      "value": "dev-api-key"
+    },
+    {
+      "key": "webhook_key",
+      "value": "dev-webhook-key"
+    },
+    {
+      "key": "call_id",
+      "value": "CALL-20260728-0001"
+    }
+  ]
+}

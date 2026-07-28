@@ -1,0 +1,55 @@
+{
+  "event_id": "evt-sample-third-party",
+  "call_id": "CALL-20260728-1009",
+  "gnani_call_reference": "gnani-evt-sample-third-party",
+  "call_status": "completed",
+  "call_duration_seconds": 28,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1009.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "THIRD_PARTY",
+    "disposition_reason": "Someone other than the borrower answered; the borrower is reachable later.",
+    "disposition_summary": "Borrower's sister answered the call; borrower is reachable this evening.",
+    "confidence": 0.82,
+    "customer_verified": false,
+    "sentiment": "neutral",
+    "evidence_quote": "this is her sister. She's not here right now"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "May I confirm I'm speaking with Aisha Bello?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "No, this is her sister. She's not here right now.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "I see, do you know when she'll be available?",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "She should be back this evening. I can pass along a message.",
+      "language": "en-US"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "Thank you, please ask her to call us back regarding her EMI payment.",
+      "language": "en-US"
+    }
+  ]
+}

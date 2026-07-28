@@ -1,0 +1,67 @@
+{
+  "event_id": "evt-sample-already-paid",
+  "call_id": "CALL-20260728-1003",
+  "gnani_call_reference": "gnani-evt-sample-already-paid",
+  "call_status": "completed",
+  "call_duration_seconds": 92,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1003.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "ALREADY_PAID",
+    "disposition_reason": "Customer states the EMI was already paid two days ago via online banking.",
+    "disposition_summary": "Customer claims payment already made; recommend verification against payment gateway records.",
+    "confidence": 0.85,
+    "customer_verified": true,
+    "sentiment": "neutral",
+    "evidence_quote": "I already paid this EMI two days ago online"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "May I confirm I'm speaking with Priya Raghunathan about the loan ending in 3456?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, speaking.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "Your EMI of 968.00 USD was due on July 23. Have you had a chance to make this payment?",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "Yes actually, I already paid this EMI two days ago online through your app.",
+      "language": "en-US"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "Thank you for letting me know. Do you happen to have a transaction reference number?",
+      "language": "en-US"
+    },
+    {
+      "turn": 6,
+      "speaker": "customer",
+      "text": "I don't have it in front of me, but it went through — I checked my bank statement.",
+      "language": "en-US"
+    },
+    {
+      "turn": 7,
+      "speaker": "bot",
+      "text": "No problem, we'll verify this on our end and update your account. Thank you for confirming.",
+      "language": "en-US"
+    }
+  ]
+}

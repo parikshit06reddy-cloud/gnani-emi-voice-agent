@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gnani EMI Collections — Voice Agent Console</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ================= Header ================= -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">G</div>
+      <div class="brand-text">
+        <h1>Gnani EMI Collections — Voice Agent Console</h1>
+        <div class="subtitle">Calls dashboard</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="conn-indicator" id="conn-indicator" data-state="polling" role="status" aria-live="polite">
+        <span class="conn-dot" aria-hidden="true"></span>
+        <span id="conn-indicator-text">Connecting…</span>
+      </span>
+      <button class="btn btn-icon" id="csv-export-btn" type="button" aria-label="Export current view to CSV" title="Export CSV">
+        ⬇
+      </button>
+      <div class="popover-wrap">
+        <button class="btn btn-icon" id="api-key-btn" type="button" aria-label="API key settings" aria-expanded="false" title="API key settings">
+          ⚙
+        </button>
+        <div class="popover" id="api-key-popover" hidden>
+          <h2>API key</h2>
+          <p class="hint">Sent as <code>X-API-Key</code> on every request. Stored locally in your browser only.</p>
+          <label for="api-key-input">Key</label>
+          <input type="text" id="api-key-input" placeholder="dev-api-key" autocomplete="off" />
+          <div class="popover-actions">
+            <button class="btn btn-sm" id="api-key-cancel" type="button">Cancel</button>
+            <button class="btn btn-sm btn-primary" id="api-key-save" type="button">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= Summary cards ================= -->
+  <section class="cards-grid" id="cards-grid" aria-label="Call summary statistics">
+    <!-- populated by dashboard.js -->
+  </section>
+
+  <!-- ================= Filter bar ================= -->
+  <section class="panel">
+    <h2 class="panel-title">Filters <span class="muted" id="filter-summary"></span></h2>
+    <form id="filter-form" class="filter-bar" autocomplete="off">
+      <div class="filter-field">
+        <label for="f-call-date">Call date</label>
+        <input type="date" id="f-call-date" name="call_date" />
+      </div>
+      <div class="filter-field">
+        <label for="f-date-from">Date from</label>
+        <input type="date" id="f-date-from" name="date_from" />
+      </div>
+      <div class="filter-field">
+        <label for="f-date-to">Date to</label>
+        <input type="date" id="f-date-to" name="date_to" />
+      </div>
+      <div class="filter-field">
+        <label for="f-call-status">Call status</label>
+        <select id="f-call-status" name="call_status">
+          <option value="">Any status</option>
+          <option value="queued">Queued</option>
+          <option value="initiated">Initiated</option>
+          <option value="ringing">Ringing</option>
+          <option value="connected">Connected</option>
+          <option value="completed">Completed</option>
+          <option value="failed">Failed</option>
+          <option value="no_answer">No answer</option>
+          <option value="busy">Busy</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label id="f-stage-code-label" for="f-stage-code-trigger">Stage code</label>
+        <div class="checkbox-dropdown" id="stage-code-dropdown">
+          <button type="button" class="checkbox-dropdown-trigger" id="f-stage-code-trigger" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-stage-code-label">
+            All stages
+          </button>
+          <div class="checkbox-dropdown-panel" id="stage-code-panel" hidden role="group" aria-label="Stage code filter options"></div>
+        </div>
+      </div>
+      <div class="filter-field">
+        <label for="f-customer-id">Customer ID</label>
+        <input type="text" id="f-customer-id" name="customer_id" placeholder="e.g. CUST001" />
+      </div>
+      <div class="filter-field">
+        <label for="f-loan-account">Loan account number</label>
+        <input type="text" id="f-loan-account" name="loan_account_number" placeholder="e.g. LAN123456" />
+      </div>
+      <div class="filter-field">
+        <label for="f-language">Language</label>
+        <select id="f-language" name="language">
+          <option value="">Any language</option>
+          <option value="en-US">English (US)</option>
+          <option value="es-ES">Spanish</option>
+          <option value="mixed">Mixed</option>
+          <option value="unknown">Unknown</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-ptp-date">PTP date</label>
+        <input type="date" id="f-ptp-date" name="ptp_date" />
+      </div>
+      <div class="filter-field">
+        <label for="f-q">Transcript / summary search</label>
+        <input type="text" id="f-q" name="q" placeholder="Search text…" />
+      </div>
+      <div class="filter-actions">
+        <button type="button" class="btn" id="filter-reset-btn">Reset</button>
+        <button type="submit" class="btn btn-primary" id="filter-apply-btn">Apply filters</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ================= Analytics charts ================= -->
+  <section class="charts-grid">
+    <div class="panel">
+      <h2 class="panel-title">Calls by stage code</h2>
+      <div id="stage-bar-chart"></div>
+    </div>
+    <div class="panel">
+      <h2 class="panel-title">Calls by language</h2>
+      <div id="lang-donut-chart"></div>
+      <div class="chart-legend" id="lang-donut-legend"></div>
+    </div>
+  </section>
+
+  <!-- ================= Calls table ================= -->
+  <section class="panel">
+    <h2 class="panel-title">
+      Calls
+      <span class="muted" id="table-result-count"></span>
+    </h2>
+    <div class="table-scroll">
+      <table id="calls-table">
+        <caption class="visually-hidden">List of collection calls with status, stage code, and disposition</caption>
+        <thead>
+          <tr>
+            <th scope="col">Call ID</th>
+            <th scope="col">Customer ID</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Masked Phone Number</th>
+            <th scope="col">Loan Account Number</th>
+            <th scope="col" class="sortable" id="th-call-initiated-time" tabindex="0" role="button" aria-sort="descending">
+              Call Initiated Time <span class="sort-arrow" aria-hidden="true">▼</span>
+            </th>
+            <th scope="col">Call Status</th>
+            <th scope="col">Call Duration</th>
+            <th scope="col">Stage Code</th>
+            <th scope="col">Disposition Reason</th>
+            <th scope="col">PTP Date</th>
+            <th scope="col">Language</th>
+            <th scope="col">View Details</th>
+          </tr>
+        </thead>
+        <tbody id="calls-tbody">
+          <!-- populated by dashboard.js -->
+        </tbody>
+      </table>
+    </div>
+    <div id="table-state-region"></div>
+    <div class="pagination" id="pagination" hidden>
+      <div class="page-info" id="page-info"></div>
+      <div class="page-controls">
+        <button class="btn btn-sm" id="page-prev" type="button" aria-label="Previous page">‹ Prev</button>
+        <span class="page-num" id="page-current">1</span>
+        <button class="btn btn-sm" id="page-next" type="button" aria-label="Next page">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="toast-region" role="status" aria-live="polite"></div>
+
+<script src="js/format.js"></script>
+<script src="js/api.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

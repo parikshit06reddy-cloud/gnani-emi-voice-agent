@@ -1,0 +1,85 @@
+{
+  "event_id": "evt-sample-rtp-financial",
+  "call_id": "CALL-20260728-1005",
+  "gnani_call_reference": "gnani-evt-sample-rtp-financial",
+  "call_status": "completed",
+  "call_duration_seconds": 92,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-SAMPLE-ES-RTP-FINANCIAL.mp3",
+  "language_detected": "es-ES",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "RTP_FINANCIAL",
+    "disposition_reason": "Customer cites job loss and financial hardship.",
+    "disposition_summary": "Customer lost her job last month and cannot commit to a payment date; requested deferral options.",
+    "confidence": 0.9,
+    "customer_verified": true,
+    "sentiment": "negative",
+    "evidence_quote": "Perdí mi trabajo el mes pasado y ahora mismo no tengo ese dinero"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "Buenas tardes, le llama Aria de Apex Financial Services sobre la cuenta de préstamo que termina en 8302. ¿Hablo con Carmen Delgado?",
+      "language": "es-ES"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Sí, soy Carmen.",
+      "language": "es-ES"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "Gracias por confirmar, Carmen. Le llamo por su cuota mensual de quinientos diecinueve dólares con noventa y nueve centavos, que venció el veinticuatro de julio. ¿Podría realizar el pago hoy?",
+      "language": "es-ES"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "No puedo. Perdí mi trabajo el mes pasado y ahora mismo no tengo ese dinero.",
+      "language": "es-ES"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "Lamento escuchar eso. ¿Tiene alguna idea de cuándo podría cambiar su situación?",
+      "language": "es-ES"
+    },
+    {
+      "turn": 6,
+      "speaker": "customer",
+      "text": "Estoy buscando trabajo, pero de verdad no puedo comprometerme a una fecha. No quiero prometer algo que no pueda cumplir.",
+      "language": "es-ES"
+    },
+    {
+      "turn": 7,
+      "speaker": "bot",
+      "text": "Entiendo, y le agradezco su honestidad. Voy a registrar que no puede pagar por dificultades económicas. ¿Le gustaría que le enviemos información sobre nuestras opciones de aplazamiento?",
+      "language": "es-ES"
+    },
+    {
+      "turn": 8,
+      "speaker": "customer",
+      "text": "Sí, por favor. Eso me ayudaría mucho.",
+      "language": "es-ES"
+    },
+    {
+      "turn": 9,
+      "speaker": "bot",
+      "text": "Perfecto. Nuestro equipo de servicio se pondrá en contacto con usted con esas opciones. Gracias por su tiempo, Carmen. Que tenga un buen día.",
+      "language": "es-ES"
+    },
+    {
+      "turn": 10,
+      "speaker": "customer",
+      "text": "Gracias a usted. Adiós.",
+      "language": "es-ES"
+    }
+  ]
+}

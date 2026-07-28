@@ -1,0 +1,49 @@
+{
+  "event_id": "evt-sample-unclear",
+  "call_id": "CALL-20260728-1016",
+  "gnani_call_reference": "gnani-evt-sample-unclear",
+  "call_status": "completed",
+  "call_duration_seconds": 92,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1016.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "PTP_TODAY",
+    "disposition_reason": "Analytics proposed PTP_TODAY but no supporting quote was captured and confidence is low.",
+    "disposition_summary": "Ambiguous conversation; customer's intent to pay today could not be clearly evidenced.",
+    "confidence": 0.35,
+    "customer_verified": true,
+    "sentiment": "neutral",
+    "evidence_quote": ""
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "May I confirm I'm speaking with Lucia Herrera?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, that's me.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "Your EMI of 1050.00 USD was due on July 25. Can we discuss this?",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "Umm, maybe, I'm not sure, I'll have to think about it.",
+      "language": "en-US"
+    }
+  ]
+}

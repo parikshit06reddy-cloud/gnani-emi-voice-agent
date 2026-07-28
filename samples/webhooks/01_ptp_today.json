@@ -1,0 +1,81 @@
+{
+  "event_id": "evt-sample-ptp-today",
+  "call_id": "CALL-20260728-1001",
+  "gnani_call_reference": "gnani-evt-sample-ptp-today",
+  "call_status": "completed",
+  "call_duration_seconds": 92,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1001.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "PTP_TODAY",
+    "disposition_reason": "Customer explicitly committed to paying today.",
+    "disposition_summary": "Customer confirmed identity, acknowledged the overdue EMI, and promised to pay the full amount today.",
+    "ptp_date": "2026-07-28",
+    "ptp_amount": 1200.0,
+    "confidence": 0.95,
+    "customer_verified": true,
+    "sentiment": "positive",
+    "evidence_quote": "I will pay it today, no problem"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "Hello, this is Aria calling from Apex Financial Services. May I confirm I'm speaking with Marcus Whitfield regarding your loan ending in 3456?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, this is Marcus speaking.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "Thank you for confirming. Your EMI of 1200.00 USD was due on July 25, 2026 and has not yet been received. Are you able to make this payment?",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "Oh, I completely forgot about it. Let me take care of it.",
+      "language": "en-US"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "I appreciate that. Just to confirm, will you be paying the full amount of 1200.00 USD today?",
+      "language": "en-US"
+    },
+    {
+      "turn": 6,
+      "speaker": "customer",
+      "text": "Yes, I will pay it today, no problem. I'll do it online this afternoon.",
+      "language": "en-US"
+    },
+    {
+      "turn": 7,
+      "speaker": "bot",
+      "text": "Wonderful, thank you Marcus. Is there anything else I can help you with regarding your account?",
+      "language": "en-US"
+    },
+    {
+      "turn": 8,
+      "speaker": "customer",
+      "text": "No, that covers it. Thanks for the reminder.",
+      "language": "en-US"
+    },
+    {
+      "turn": 9,
+      "speaker": "bot",
+      "text": "You're welcome. Have a great day, and thank you for banking with Apex Financial Services.",
+      "language": "en-US"
+    }
+  ]
+}

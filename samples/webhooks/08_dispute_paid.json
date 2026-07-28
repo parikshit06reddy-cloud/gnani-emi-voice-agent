@@ -1,0 +1,55 @@
+{
+  "event_id": "evt-sample-dispute-paid",
+  "call_id": "CALL-20260728-1008",
+  "gnani_call_reference": "gnani-evt-sample-dispute-paid",
+  "call_status": "completed",
+  "call_duration_seconds": 92,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1008.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "DISPUTE_PAID",
+    "disposition_reason": "Customer disputes that this EMI is still outstanding, insisting it was already settled and is being wrongly re-billed.",
+    "disposition_summary": "Customer disputes the outstanding balance, claiming it was already paid and incorrectly re-charged.",
+    "confidence": 0.86,
+    "customer_verified": true,
+    "sentiment": "negative",
+    "evidence_quote": "I already paid this last month and you are billing me again by mistake"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "May I confirm I'm speaking with Jonathan Pike about your EMI ending in 3456?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, but this call shouldn't even be happening.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "I'm sorry to hear that, can you explain?",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "I already paid this last month and you are billing me again by mistake. I want this corrected, not just noted as unpaid.",
+      "language": "en-US"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "I understand your frustration, I'm logging this as a billing dispute for urgent review.",
+      "language": "en-US"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "turn": 1,
+    "speaker": "bot",
+    "text": "Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in 4417. May I confirm I am speaking with Marcus Whitfield?",
+    "language": "en-US"
+  },
+  {
+    "turn": 2,
+    "speaker": "customer",
+    "text": "Yeah, this is Marcus.",
+    "language": "en-US"
+  },
+  {
+    "turn": 3,
+    "speaker": "bot",
+    "text": "Thank you for confirming, Marcus. I'm calling about your monthly installment of nine hundred sixty eight dollars, which was due on July twenty first. Are you able to take care of that today?",
+    "language": "en-US"
+  },
+  {
+    "turn": 4,
+    "speaker": "customer",
+    "text": "Not today, no. I just moved and things have been tight.",
+    "language": "en-US"
+  },
+  {
+    "turn": 5,
+    "speaker": "bot",
+    "text": "I understand. Is there a date in the next couple of weeks when you would be able to make the payment?",
+    "language": "en-US"
+  },
+  {
+    "turn": 6,
+    "speaker": "customer",
+    "text": "I get paid on the seventh, so... I could do it on the eighth of August.",
+    "language": "en-US"
+  },
+  {
+    "turn": 7,
+    "speaker": "bot",
+    "text": "August eighth. And would that be the full nine hundred sixty eight dollars?",
+    "language": "en-US"
+  },
+  {
+    "turn": 8,
+    "speaker": "customer",
+    "text": "Yes, the full amount.",
+    "language": "en-US"
+  },
+  {
+    "turn": 9,
+    "speaker": "bot",
+    "text": "Perfect. So just to confirm, you will pay nine hundred sixty eight dollars on August eighth. Is that correct?",
+    "language": "en-US"
+  },
+  {
+    "turn": 10,
+    "speaker": "customer",
+    "text": "That's correct.",
+    "language": "en-US"
+  },
+  {
+    "turn": 11,
+    "speaker": "bot",
+    "text": "Thank you, Marcus. I've noted that down. You'll receive a reminder before the date. Have a good day.",
+    "language": "en-US"
+  },
+  {
+    "turn": 12,
+    "speaker": "customer",
+    "text": "Thanks. Bye.",
+    "language": "en-US"
+  }
+]

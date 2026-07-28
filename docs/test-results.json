@@ -1,0 +1,232 @@
+{
+  "generated_at": "2026-07-28T20:24:47.093766+00:00",
+  "mandatory": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "scenarios": [
+      {
+        "name": "1. PTP today",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=PTP_TODAY",
+        "call_id": "CALL-20260728-0001",
+        "stage_code": "PTP_TODAY"
+      },
+      {
+        "name": "2. Future PTP",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=PTP_FUTURE",
+        "call_id": "CALL-20260728-0002",
+        "stage_code": null
+      },
+      {
+        "name": "3. Already paid",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=ALREADY_PAID",
+        "call_id": "CALL-20260728-0003",
+        "stage_code": null
+      },
+      {
+        "name": "4. Callback requested",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=CALLBACK_SCHEDULED",
+        "call_id": "CALL-20260728-0004",
+        "stage_code": null
+      },
+      {
+        "name": "5. RTP financial",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=RTP_FINANCIAL",
+        "call_id": "CALL-20260728-0005",
+        "stage_code": null
+      },
+      {
+        "name": "6. Dispute EMI amount",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=DISPUTE_CHARGES",
+        "call_id": "CALL-20260728-0006",
+        "stage_code": null
+      },
+      {
+        "name": "7. Third party answers",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=THIRD_PARTY",
+        "call_id": "CALL-20260728-0007",
+        "stage_code": null
+      },
+      {
+        "name": "8. Language switch mid-call (bilingual)",
+        "passed": true,
+        "detail": "stage_code=PTP_TOMORROW language_switched=True language_captured=mixed",
+        "call_id": "CALL-20260728-0008",
+        "stage_code": null
+      },
+      {
+        "name": "9. Disconnect with no clear disposition",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=DSCN",
+        "call_id": "CALL-20260728-0009",
+        "stage_code": null
+      },
+      {
+        "name": "10. Duplicate webhook replay",
+        "passed": true,
+        "detail": "first.duplicate=False second.duplicate=True",
+        "call_id": "CALL-20260728-0010",
+        "stage_code": null
+      },
+      {
+        "name": "11. Invalid initial request (expect 422)",
+        "passed": true,
+        "detail": "status=422 code=VALIDATION_ERROR",
+        "call_id": null,
+        "stage_code": null
+      },
+      {
+        "name": "12. Gnani API failure + timeout (injected)",
+        "passed": true,
+        "detail": "timeout_status=504 failure_status=502",
+        "call_id": null,
+        "stage_code": null
+      }
+    ]
+  },
+  "supplementary": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "scenarios": [
+      {
+        "name": "13. [Supplementary] PTP partial payment",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=PTP_PARTIAL ptp_amount=750.0 (< emi_amount=1500.0)",
+        "call_id": "CALL-20260728-0013",
+        "stage_code": "PTP_PARTIAL"
+      },
+      {
+        "name": "14. [Supplementary] RNR (ring, no response)",
+        "passed": true,
+        "detail": "webhook status=200 stage_code=RNR",
+        "call_id": "CALL-20260728-0014",
+        "stage_code": "RNR"
+      }
+    ]
+  },
+  "total": 14,
+  "passed": 14,
+  "failed": 0,
+  "scenarios": [
+    {
+      "name": "1. PTP today",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=PTP_TODAY",
+      "call_id": "CALL-20260728-0001",
+      "stage_code": "PTP_TODAY",
+      "supplementary": false
+    },
+    {
+      "name": "2. Future PTP",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=PTP_FUTURE",
+      "call_id": "CALL-20260728-0002",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "3. Already paid",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=ALREADY_PAID",
+      "call_id": "CALL-20260728-0003",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "4. Callback requested",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=CALLBACK_SCHEDULED",
+      "call_id": "CALL-20260728-0004",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "5. RTP financial",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=RTP_FINANCIAL",
+      "call_id": "CALL-20260728-0005",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "6. Dispute EMI amount",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=DISPUTE_CHARGES",
+      "call_id": "CALL-20260728-0006",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "7. Third party answers",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=THIRD_PARTY",
+      "call_id": "CALL-20260728-0007",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "8. Language switch mid-call (bilingual)",
+      "passed": true,
+      "detail": "stage_code=PTP_TOMORROW language_switched=True language_captured=mixed",
+      "call_id": "CALL-20260728-0008",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "9. Disconnect with no clear disposition",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=DSCN",
+      "call_id": "CALL-20260728-0009",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "10. Duplicate webhook replay",
+      "passed": true,
+      "detail": "first.duplicate=False second.duplicate=True",
+      "call_id": "CALL-20260728-0010",
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "11. Invalid initial request (expect 422)",
+      "passed": true,
+      "detail": "status=422 code=VALIDATION_ERROR",
+      "call_id": null,
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "12. Gnani API failure + timeout (injected)",
+      "passed": true,
+      "detail": "timeout_status=504 failure_status=502",
+      "call_id": null,
+      "stage_code": null,
+      "supplementary": false
+    },
+    {
+      "name": "13. [Supplementary] PTP partial payment",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=PTP_PARTIAL ptp_amount=750.0 (< emi_amount=1500.0)",
+      "call_id": "CALL-20260728-0013",
+      "stage_code": "PTP_PARTIAL",
+      "supplementary": true
+    },
+    {
+      "name": "14. [Supplementary] RNR (ring, no response)",
+      "passed": true,
+      "detail": "webhook status=200 stage_code=RNR",
+      "call_id": "CALL-20260728-0014",
+      "stage_code": "RNR",
+      "supplementary": true
+    }
+  ]
+}

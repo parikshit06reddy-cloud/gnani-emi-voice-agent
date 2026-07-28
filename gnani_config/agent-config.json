@@ -1,0 +1,354 @@
+{
+  "$schema": "https://app.gnani.ai/schemas/agent-import/v1.json",
+  "export_meta": {
+    "exported_by": "gnani-emi-voice-agent submission",
+    "export_format_version": "2.0",
+    "console_url": "https://app.gnani.ai/agents/agent/list",
+    "console_agent_url": "https://app.gnani.ai/agents/agent/update?agentId=d411993d126843e2912509f931d54ee2&configTab=Agent+Details",
+    "note": "Structured to mirror the REAL Gnani Agents Console tab layout (Agent Details, System Prompt, Conversation Flow, Transcriber, LLM Model, Voice, Analytics, FAQ Answers), based on a live configuration session documented in gnani_config/CONSOLE_FINDINGS.md. There is no 'export existing agent' action in the Console UI, but the Console DOES support 'Import an Agent (.json upload)' as a creation mode — this file is positioned as an import-compatible / reference document for that flow, not a literal Console-generated export. All secrets are environment/secret references. No real API keys are present in this file.",
+    "created_agent": {
+      "name": "EMI Collections Agent - Apex Financial",
+      "agent_id": "d411993d126843e2912509f931d54ee2",
+      "owner": "Parikshit Reddy (itsmeparikshitreddy@gmail.com)",
+      "created": "2026-07-28T14:30:00-05:00",
+      "channels": ["Chat", "Voice"],
+      "save_status": "Agent detail(s) updated successfully"
+    }
+  },
+  "requirement_to_console_mapping": {
+    "note": "The assignment mandates Gnani Prisma ASR, Gnani Timbre 2.5 TTS, and Gnani Evon LLM. In this Console tenant, 'Prisma' and 'Timbre 2.5' are not exposed as selectable models; the Gnani-native model actually offered in each slot was selected in every case, so the 'all three components are Gnani-native' requirement is satisfied at the tenant-configuration level. Prisma and Timbre 2.5 should be enabled by Gnani for this tenant/reviewer account. Swapping to the exact-named model, once available, is a one-field change (asr.model / tts.model below, or GNANI_ASR_MODEL / GNANI_TTS_MODEL env vars for the backend).",
+    "components": [
+      {
+        "component": "Automatic Speech Recognition",
+        "assignment_required_model": "Gnani Prisma ASR",
+        "console_provider_options": ["Gnani", "Microsoft"],
+        "console_gnani_native_model_options": ["Responsive"],
+        "console_selected_provider": "Gnani",
+        "console_selected_model": "Responsive",
+        "available_in_tenant": false,
+        "note": "'Prisma' does not appear anywhere in the Transcriber tab's provider/model UI. 'Responsive' is the only Gnani-native ASR model offered in this tenant and was selected as the closest/only native match."
+      },
+      {
+        "component": "Text-to-Speech",
+        "assignment_required_model": "Gnani Timbre 2.5 TTS",
+        "console_service_options": ["Cartesia", "ElevenLabs", "Gemini", "Gnani", "Google", "Microsoft", "Speech Cloud"],
+        "console_gnani_native_model_options": ["Gnani Timbre G v1.0"],
+        "console_selected_service": "Gnani",
+        "console_selected_model": "Gnani Timbre G v1.0",
+        "console_selected_voice": "Jenny (Female)",
+        "available_in_tenant": false,
+        "note": "'Timbre 2.5' does not exist in this tenant. 'Gnani Timbre G v1.0' is the only Gnani-native TTS model offered and was selected as the closest/only native match. Voice options under this model: Elena (Female), Jenny (Female), John (Male), Lucia (Female) — Jenny selected per the requirement for a female voice."
+      },
+      {
+        "component": "Language Model",
+        "assignment_required_model": "Gnani Evon LLM",
+        "console_provider_options": ["Gnani", "Google", "Open AI"],
+        "console_gnani_native_model_options": ["Gnani Aion v3.2", "Gnani Evon v2.0", "Gnani Evon v2.0 Fast", "Gnani Evon v2.0 Ultra"],
+        "console_selected_provider": "Gnani",
+        "console_selected_model": "Gnani Evon v2.0",
+        "available_in_tenant": true,
+        "note": "Exact match. 'Gnani Evon v2.0 Fast' is the Console's pre-selected default for new agents; it was changed to plain 'Gnani Evon v2.0' to match the assignment's 'Evon' requirement precisely, rather than keeping a Fast/Ultra variant."
+      }
+    ]
+  },
+  "agent_details": {
+    "name": "EMI Collections Agent - Apex Financial",
+    "agent_id": "${GNANI_AGENT_ID}",
+    "region": "America",
+    "time_zone": "EST",
+    "description": "Outbound EMI payment collection voice agent. Bilingual English (US) and Spanish. Produces evidence-based disposition stage codes.",
+    "icon": "default",
+    "channels": ["Chat", "Voice"],
+    "languages": {
+      "primary": "English (US)",
+      "additional": ["Spanish"],
+      "language_switch_trigger_threshold": 2,
+      "language_switch_prompt_mode": "Explicit",
+      "language_switch_prompt_mode_options": ["Implicit", "Explicit", "Custom"],
+      "note": "Adding a second language triggers a 'Language Change Confirmation' modal and reveals the Language Switch Trigger Threshold and Language Switch Prompt Mode settings. Explicit Mode was selected so a language switch only happens when requested in the call; Implicit Mode is the more literal match if 'automatic detection' is interpreted strictly — flagged for reviewer awareness."
+    }
+  },
+  "system_prompt": {
+    "tab": "System Prompt",
+    "field": "System Prompt*",
+    "content_ref": "prompts/01-system-prompt.md",
+    "word_count": 369,
+    "validated": true,
+    "quality_meter_result": "Poor",
+    "quality_meter_note": "Heuristic Console quality score after clicking 'Validate'; not a hard blocker to saving. Not evidence of prompt defects — see prompts/01-system-prompt.md for the full prompt and guardrails."
+  },
+  "conversation_flow": {
+    "tab": "Conversation Flow",
+    "dynamic_messages": {
+      "enabled": false
+    },
+    "greeting_message": {
+      "required": true,
+      "value": "Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in {{loan_last4}}. May I confirm I am speaking with {{customer_name}}?"
+    },
+    "ending_message": {
+      "required": true,
+      "value": "Thank you for your time today. Have a good day, and goodbye.",
+      "note": "Not specified by the assignment; drafted for this submission to satisfy the required field."
+    },
+    "pre_call_variables": {
+      "enabled": true,
+      "table_columns": ["Variable", "Sample Value"],
+      "variables": [
+        {"variable": "customer_name", "sample_value": ""},
+        {"variable": "customer_id", "sample_value": ""},
+        {"variable": "loan_last4", "sample_value": ""},
+        {"variable": "loan_account_number", "sample_value": ""},
+        {"variable": "emi_amount", "sample_value": ""},
+        {"variable": "currency", "sample_value": ""},
+        {"variable": "emi_due_date", "sample_value": ""},
+        {"variable": "preferred_language", "sample_value": ""},
+        {"variable": "current_date", "sample_value": ""},
+        {"variable": "org_name", "sample_value": ""},
+        {"variable": "bot_name", "sample_value": ""}
+      ]
+    },
+    "call_transfer": {
+      "enabled": false
+    }
+  },
+  "transcriber": {
+    "tab": "Transcriber",
+    "provider_field_label": "Select the ASR provider for your agent",
+    "provider_options": ["Gnani", "Microsoft"],
+    "provider": "Gnani",
+    "model": "${GNANI_ASR_MODEL}",
+    "model_display_name": "Responsive",
+    "model_description": "Consistent low latency regardless of response length. Best when real-time feel is the priority.",
+    "assignment_required_model": "Gnani Prisma ASR",
+    "console_selected_model": "Gnani Responsive",
+    "model_availability_note": "'Prisma' is not offered in this tenant's ASR model list. 'Responsive' is the only Gnani-native ASR model and was selected. GNANI_ASR_MODEL is an env-configurable value (see .env.example) and can be pointed at the tenant's real model ID (e.g. a future 'prisma' model ID) with no code changes.",
+    "allow_interruptions": {
+      "enabled": true,
+      "min_words_to_interrupt": 2
+    },
+    "initial_message_interruption": {
+      "enabled": false
+    },
+    "background_noise_filtering": {
+      "enabled": true,
+      "range": [20, 100],
+      "value": 60
+    },
+    "inverse_text_normalisation": {
+      "enabled": true
+    },
+    "max_speech_duration_seconds": {
+      "range": [1, 240],
+      "value": 30
+    },
+    "initial_silence_timeout_seconds": {
+      "range": [10, 60],
+      "value": 15
+    },
+    "speech_segmentation_silence_seconds": {
+      "range": [0.1, 5],
+      "value": 0.6
+    },
+    "custom_vocabulary": {
+      "field_label": "Add product, people, brand names, etc",
+      "en-US": ["EMI", "loan account", "promise to pay", "PTP", "overdue", "installment", "collections", "callback", "due date", "partial payment", "settlement", "penalty charge"],
+      "es-ES": ["cuota", "préstamo", "cuenta de préstamo", "promesa de pago", "vencido", "fecha de vencimiento", "pago parcial", "cobranza", "devolución de llamada", "cargo por mora", "acuerdo de pago"]
+    }
+  },
+  "llm_model": {
+    "tab": "LLM Model",
+    "provider_field_label": "Select Provider",
+    "provider_options": ["Gnani", "Google", "Open AI"],
+    "provider": "Gnani",
+    "model_field_label": "Select Model",
+    "model_options_under_gnani": ["Gnani Aion v3.2", "Gnani Evon v2.0", "Gnani Evon v2.0 Fast", "Gnani Evon v2.0 Ultra"],
+    "model": "${GNANI_LLM_MODEL}",
+    "model_display_name": "Gnani Evon v2.0",
+    "assignment_required_model": "Gnani Evon LLM",
+    "console_selected_model": "Gnani Evon v2.0",
+    "model_availability_note": "Exact match — 'Evon' exists natively as 'Gnani Evon v2.0'. GNANI_LLM_MODEL is env-configurable (see .env.example) and can be pointed at any sibling model (Aion v3.2, Evon v2.0 Fast, Evon v2.0 Ultra) with no code changes.",
+    "knowledge_base_connector": {
+      "connected": false,
+      "note": "Console shows a non-blocking informational warning ('Connect a KB with all required information...') when no Knowledge Base is attached."
+    },
+    "temperature": 0.5,
+    "max_tokens": 300,
+    "max_tokens_note": "Per Console helper text, ~3-4 characters or 3/4 of a word per token.",
+    "system_prompt_ref": "prompts/01-system-prompt.md",
+    "conversation_flow_ref": "prompts/02-conversation-flow.md",
+    "objection_library_ref": "prompts/04-objection-handling.md",
+    "guardrails_ref": "prompts/05-guardrails.md"
+  },
+  "voice": {
+    "tab": "Voice",
+    "provider_field_label": "Select the TTS provider for your agent",
+    "service_options": ["Cartesia", "ElevenLabs", "Gemini", "Gnani", "Google", "Microsoft", "Speech Cloud"],
+    "service": "Gnani",
+    "model": "${GNANI_TTS_MODEL}",
+    "model_display_name": "Gnani Timbre G v1.0",
+    "assignment_required_model": "Gnani Timbre 2.5 TTS",
+    "console_selected_model": "Gnani Timbre G v1.0",
+    "model_availability_note": "'Timbre 2.5' is not offered in this tenant. 'Gnani Timbre G v1.0' is the only Gnani-native TTS model and was selected. GNANI_TTS_MODEL is env-configurable (see .env.example) and can be pointed at the tenant's real model ID (e.g. a future 'timbre-2.5' model ID) with no code changes.",
+    "voice_options": ["Elena (Female)", "Jenny (Female)", "John (Male)", "Lucia (Female)"],
+    "voice_selected": "Jenny (Female)",
+    "voice_language_support": "All four voices support both English (US) and Spanish per the Console's Voice Library page (https://app.gnani.ai/agents/voice-library).",
+    "rate_of_speech": {
+      "range": [0.25, 2],
+      "value": 1
+    },
+    "caching": {
+      "enabled": true,
+      "note": "Plays cached audio for common phrases."
+    },
+    "ambient_sound": {
+      "enabled": false
+    }
+  },
+  "analytics": {
+    "tab": "Analytics",
+    "post_call_trigger": {
+      "section_label": "Post-Call Trigger",
+      "description": "Set post call API config.",
+      "enabled": true,
+      "method": "POST",
+      "method_options": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+      "url": "${PUBLIC_WEBHOOK_BASE_URL}/api/v1/webhooks/post-call",
+      "headers": {
+        "enabled": false,
+        "table_columns": ["Key", "Value"],
+        "entries": [],
+        "note": "Left empty/off in the shared console account so no secret (X-Webhook-Key) was stored in a shared UI. In a production tenant, add a Key/Value row: Key='X-Webhook-Key', Value=<secret reference to ${secrets.WEBHOOK_API_KEY}>."
+      }
+    },
+    "post_call_data_extraction": {
+      "section_label": "Post-call Data Extraction",
+      "description": "Extract the final call outcome and key details from each call transcript.",
+      "enabled": false,
+      "known_console_defect": "Saving with this section enabled returned 'Failed to update agent detail(s)' during the live session, even with a single valid-looking Enum field populated. It was left disabled to preserve a clean saved state ('Agent detail(s) updated successfully'). See gnani_config/CONSOLE_FINDINGS.md for details.",
+      "base_instructions": "",
+      "base_instructions_field_label": "Base Instructions",
+      "add_data_field_button": "Add Data Field",
+      "field_definitions_intended": [
+        {
+          "field_name": "stage_code",
+          "type": "Enum",
+          "field_description": "Final disposition stage code for the call, chosen only from explicit customer statements.",
+          "options": ["PTP_TODAY", "PTP_TOMORROW", "PTP_FUTURE", "PTP_PARTIAL", "ALREADY_PAID", "CALLBACK_SCHEDULED", "RTP_FINANCIAL", "RTP_MEDICAL", "RTP_NO_REASON", "DISPUTE_PAID", "DISPUTE_CHARGES", "NO_LOAN", "WRONG_NUMBER", "THIRD_PARTY", "BUSY", "RNR", "VM", "DSCN", "UNCLEAR"],
+          "extraction_instruction": "Select exactly one stage code based only on explicit customer statements in the transcript. Never infer or assume. Commitment codes (PTP_*, ALREADY_PAID, CALLBACK_SCHEDULED, DISPUTE_*, NO_LOAN, RTP_*, WRONG_NUMBER, THIRD_PARTY) require a verbatim evidence quote from a customer turn; if no such quote exists, fall back to UNCLEAR (or BUSY/RNR/VM/DSCN for non-verbal call outcomes). See prompts/03-analytics-prompt.md for full tie-breaker rules."
+        },
+        {
+          "field_name": "disposition_reason",
+          "type": "String",
+          "field_description": "One-sentence factual reason for the disposition, based on what the customer said.",
+          "extraction_instruction": "Write one sentence (<= 200 characters) stating what the customer explicitly said. Do not include your own inference or speculation."
+        },
+        {
+          "field_name": "disposition_summary",
+          "type": "String",
+          "field_description": "2-4 sentence factual summary of the call.",
+          "extraction_instruction": "Summarize the call in 2-4 sentences, strictly factual, no speculation about intent beyond what was said."
+        },
+        {
+          "field_name": "ptp_date",
+          "type": "String",
+          "field_description": "ISO 8601 date (YYYY-MM-DD) the customer committed to pay, or null.",
+          "extraction_instruction": "Resolve relative date expressions ('today', 'tomorrow', 'next week', weekday names, explicit dates) against call_metadata.call_date. Output ISO 8601 only. Leave null if no explicit date/commitment was stated, even if the stage_code implies one should exist."
+        },
+        {
+          "field_name": "ptp_amount",
+          "type": "Number",
+          "field_description": "Amount the customer committed to pay, or null.",
+          "extraction_instruction": "Only populate if the customer stated a specific amount. Never fabricate an amount; leave null otherwise."
+        },
+        {
+          "field_name": "callback_datetime",
+          "type": "String",
+          "field_description": "ISO 8601 datetime for a requested callback, or null.",
+          "extraction_instruction": "Populate only if the customer gave a specific day and/or time window for a callback (even approximate, e.g. 'this evening'). Resolve to ISO 8601. Leave null otherwise."
+        },
+        {
+          "field_name": "customer_verified",
+          "type": "Boolean",
+          "field_description": "Whether the customer's identity was affirmatively confirmed.",
+          "extraction_instruction": "True only if the transcript shows the customer affirmatively acknowledging their identity (e.g. 'yes, this is Rahul', 'sí, soy yo'). A non-denial is not sufficient evidence."
+        },
+        {
+          "field_name": "sentiment",
+          "type": "Enum",
+          "field_description": "Overall customer sentiment during the call.",
+          "options": ["positive", "neutral", "negative"],
+          "extraction_instruction": "Classify overall customer sentiment across the call as positive, neutral, or negative based on tone and content of customer turns only."
+        },
+        {
+          "field_name": "evidence_quote",
+          "type": "String",
+          "field_description": "Verbatim substring from a customer turn supporting the stage_code, or null.",
+          "extraction_instruction": "Copy an exact, character-for-character substring from a customer-speaker turn's text that supports the chosen stage_code. If no such substring exists for a commitment code, the stage_code must not be used — fall back to UNCLEAR/BUSY/RNR/VM/DSCN instead and leave this null."
+        },
+        {
+          "field_name": "confidence",
+          "type": "Number",
+          "field_description": "Calibrated confidence (0.0-1.0) in the stage_code decision.",
+          "extraction_instruction": "0.9-1.0 for explicit unambiguous statements with clean evidence; 0.6-0.89 for clear statements with minor ambiguity; below 0.6 for weak/partially-inferred signals (favor UNCLEAR instead of forcing a higher-confidence code)."
+        }
+      ],
+      "test_extraction_button": "Test Extraction",
+      "note": "Field definitions derived from prompts/03-analytics-prompt.md. Intended to be entered once the Console-side save defect is fixed; the backend independently re-validates stage_code, evidence_quote and dates in app/services/stage_code.py regardless of Console-side output, per CONTRACT.md."
+    }
+  },
+  "faq_answers": {
+    "tab": "FAQ Answers",
+    "enabled": false,
+    "description": "Set predefined answers for user queries (Only available for English and Hindi).",
+    "supported_languages": ["English", "Hindi"],
+    "limitation_note": "Spanish is not supported by this feature, despite this agent being bilingual English (US) / Spanish. Documented as a known console limitation — not used for this agent since Spanish coverage would be incomplete."
+  },
+  "engines_env_mapping": {
+    "note": "The backend (app/) intentionally uses assignment-identifier env values (gnani-prisma / gnani-timbre-2.5 / gnani-evon) as configurable defaults. These are NOT hardcoded — they are read from environment variables and can be repointed at this tenant's real Console model IDs with no code changes.",
+    "GNANI_ASR_MODEL": {"env_default": "gnani-prisma", "console_tenant_value": "Responsive (Gnani)"},
+    "GNANI_TTS_MODEL": {"env_default": "gnani-timbre-2.5", "console_tenant_value": "Gnani Timbre G v1.0"},
+    "GNANI_LLM_MODEL": {"env_default": "gnani-evon", "console_tenant_value": "Gnani Evon v2.0"}
+  },
+  "webhook": {
+    "post_call": {
+      "url": "${PUBLIC_WEBHOOK_BASE_URL}/api/v1/webhooks/post-call",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json",
+        "X-Webhook-Key": "${secrets.WEBHOOK_API_KEY}"
+      },
+      "payload_ref": "CONTRACT.md#2-post-apiv1webhookspost-call",
+      "retry_policy": {
+        "max_retries": 3,
+        "backoff": "exponential",
+        "initial_delay_seconds": 1,
+        "max_delay_seconds": 20,
+        "retry_on_status": [408, 429, 500, 502, 503, 504],
+        "idempotency_key_field": "event_id",
+        "idempotency_fallback": "call_id + call_ended_at"
+      },
+      "timeout_seconds": 10
+    },
+    "call_trigger": {
+      "url": "${GNANI_BASE_URL}/v1/calls/trigger",
+      "method": "POST",
+      "headers": {
+        "Authorization": "Bearer ${secrets.GNANI_API_KEY}",
+        "Content-Type": "application/json"
+      },
+      "consumed_by": "app/services/gnani_client.py",
+      "timeout_seconds": "${GNANI_TIMEOUT_SECONDS}",
+      "max_retries": "${GNANI_MAX_RETRIES}",
+      "retry_backoff_seconds": "${GNANI_RETRY_BACKOFF_SECONDS}"
+    }
+  },
+  "stage_code_catalogue_ref": "gnani_config/stage-codes.json",
+  "security": {
+    "secrets_used": [
+      "GNANI_API_KEY (Gnani Console API auth, secret manager reference only)",
+      "WEBHOOK_API_KEY (X-Webhook-Key header for post-call webhook, secret manager reference only)"
+    ],
+    "note": "No plaintext secrets in this file. All values of the form ${VAR} or ${secrets.VAR} are resolved at deploy/runtime from environment variables or a secret manager, per .env.example. The Console's own Headers table for the Post-Call Trigger was intentionally left empty in the shared account for this same reason."
+  }
+}

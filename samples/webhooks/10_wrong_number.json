@@ -1,0 +1,43 @@
+{
+  "event_id": "evt-sample-wrong-number",
+  "call_id": "CALL-20260728-1010",
+  "gnani_call_reference": "gnani-evt-sample-wrong-number",
+  "call_status": "completed",
+  "call_duration_seconds": 15,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1010.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "WRONG_NUMBER",
+    "disposition_reason": "The person who answered has no knowledge of the borrower and states this is not their number.",
+    "disposition_summary": "Wrong number reached; no relationship to the borrower.",
+    "confidence": 0.9,
+    "customer_verified": false,
+    "sentiment": "neutral",
+    "evidence_quote": "I don't know any Nathan Brooks, you have the wrong number"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "May I confirm I'm speaking with Nathan Brooks?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "No, I don't know any Nathan Brooks, you have the wrong number.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "I apologize for the inconvenience, I'll update our records. Have a good day.",
+      "language": "en-US"
+    }
+  ]
+}

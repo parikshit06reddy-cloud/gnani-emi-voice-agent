@@ -1,0 +1,37 @@
+{
+  "event_id": "evt-sample-disconnect",
+  "call_id": "CALL-20260728-1015",
+  "gnani_call_reference": "gnani-evt-sample-disconnect",
+  "call_status": "failed",
+  "call_duration_seconds": 8,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1015.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": null,
+    "disposition_reason": "Call dropped shortly after connecting, before any disposition could be captured.",
+    "disposition_summary": "The call was disconnected mid-conversation.",
+    "confidence": 0.0,
+    "customer_verified": null,
+    "sentiment": "unknown",
+    "evidence_quote": null
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "Hello, may I confirm I'm speaking with Miguel Santos?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, this is—",
+      "language": "en-US"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "event_id": "evt-sample-rtp-medical",
+  "call_id": "CALL-20260728-1006",
+  "gnani_call_reference": "gnani-evt-sample-rtp-medical",
+  "call_status": "completed",
+  "call_duration_seconds": 92,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1006.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "RTP_MEDICAL",
+    "disposition_reason": "Customer cites a medical emergency and hospital expenses preventing payment.",
+    "disposition_summary": "Customer's family member is hospitalized; unable to pay EMI this cycle.",
+    "confidence": 0.88,
+    "customer_verified": true,
+    "sentiment": "negative",
+    "evidence_quote": "my wife is in the hospital and all our money is going to medical bills"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "Am I speaking with Tyrone Jackson regarding your loan ending in 3456?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, this is Tyrone.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "Your EMI of 2150.00 USD was due on July 19. Can you make the payment?",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "This isn't a good time, my wife is in the hospital and all our money is going to medical bills.",
+      "language": "en-US"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "I'm sorry to hear that. We'll note this and have our team reach out about possible relief options.",
+      "language": "en-US"
+    }
+  ]
+}

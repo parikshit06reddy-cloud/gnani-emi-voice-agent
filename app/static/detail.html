@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Call Details — Gnani EMI Collections Console</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">G</div>
+      <div class="brand-text">
+        <h1>Gnani EMI Collections — Voice Agent Console</h1>
+        <div class="subtitle">Call details</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="popover-wrap">
+        <button class="btn btn-icon" id="api-key-btn" type="button" aria-label="API key settings" aria-expanded="false" title="API key settings">
+          ⚙
+        </button>
+        <div class="popover" id="api-key-popover" hidden>
+          <h2>API key</h2>
+          <p class="hint">Sent as <code>X-API-Key</code> on every request. Stored locally in your browser only.</p>
+          <label for="api-key-input">Key</label>
+          <input type="text" id="api-key-input" placeholder="dev-api-key" autocomplete="off" />
+          <div class="popover-actions">
+            <button class="btn btn-sm" id="api-key-cancel" type="button">Cancel</button>
+            <button class="btn btn-sm btn-primary" id="api-key-save" type="button">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <a class="back-link" href="#" id="back-link">← Back to calls list</a>
+
+  <div id="detail-state-region"></div>
+
+  <div id="detail-content" hidden>
+
+    <!-- Disposition panel (prominent, full width) -->
+    <section class="panel" style="margin-bottom:16px;">
+      <h2 class="panel-title">
+        Disposition
+        <span class="muted" id="call-id-heading"></span>
+      </h2>
+      <div class="disposition-head">
+        <span class="chip" id="disp-stage-chip"></span>
+        <span class="badge" id="disp-source-badge"></span>
+        <span class="badge" id="disp-verified-badge"></span>
+        <span class="badge" id="disp-sentiment-badge"></span>
+        <div class="confidence-meter" id="disp-confidence" aria-label="Confidence score">
+          <span class="meter-track"><span class="meter-fill" id="disp-confidence-fill"></span></span>
+          <span class="meter-value" id="disp-confidence-value"></span>
+        </div>
+      </div>
+      <div class="kv-list">
+        <div class="kv-item">
+          <div class="kv-label">Disposition reason</div>
+          <div class="kv-value" id="disp-reason">—</div>
+        </div>
+        <div class="kv-item">
+          <div class="kv-label">Disposition summary</div>
+          <div class="kv-value" id="disp-summary">—</div>
+        </div>
+        <div class="kv-item">
+          <div class="kv-label">PTP date / amount</div>
+          <div class="kv-value" id="disp-ptp">—</div>
+        </div>
+        <div class="kv-item">
+          <div class="kv-label">Callback datetime</div>
+          <div class="kv-value" id="disp-callback">—</div>
+        </div>
+      </div>
+      <blockquote class="evidence-quote" id="disp-evidence">No evidence quote captured.</blockquote>
+    </section>
+
+    <div class="detail-grid">
+
+      <!-- Customer details -->
+      <section class="panel">
+        <h2 class="panel-title">Customer</h2>
+        <div class="kv-list">
+          <div class="kv-item">
+            <div class="kv-label">Customer ID</div>
+            <div class="kv-value" id="cust-id">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Name</div>
+            <div class="kv-value" id="cust-name">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Masked phone</div>
+            <div class="kv-value mono" id="cust-phone">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Country code</div>
+            <div class="kv-value" id="cust-country">—</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMI details -->
+      <section class="panel">
+        <h2 class="panel-title">EMI details</h2>
+        <div class="kv-list">
+          <div class="kv-item">
+            <div class="kv-label">Loan account number</div>
+            <div class="kv-value mono" id="emi-loan">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">EMI amount</div>
+            <div class="kv-value" id="emi-amount">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">EMI due date</div>
+            <div class="kv-value" id="emi-due">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Currency</div>
+            <div class="kv-value" id="emi-currency">—</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Call metadata -->
+      <section class="panel">
+        <h2 class="panel-title">Call metadata</h2>
+        <div class="kv-list">
+          <div class="kv-item">
+            <div class="kv-label">Status</div>
+            <div class="kv-value" id="meta-status">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Duration</div>
+            <div class="kv-value" id="meta-duration">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Initiated at</div>
+            <div class="kv-value" id="meta-initiated">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Started at</div>
+            <div class="kv-value" id="meta-started">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Completed at</div>
+            <div class="kv-value" id="meta-completed">—</div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-label">Gnani call reference</div>
+            <div class="kv-value mono" id="meta-reference">—</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Engine badges -->
+      <section class="panel span-3">
+        <h2 class="panel-title">Engines used</h2>
+        <div class="engine-badges" id="engine-badges"></div>
+      </section>
+
+      <!-- Audio player -->
+      <section class="panel span-3 audio-panel">
+        <h2 class="panel-title">Call recording</h2>
+        <div id="audio-region"></div>
+      </section>
+
+      <!-- Transcript -->
+      <section class="panel span-3">
+        <h2 class="panel-title">Conversation transcript</h2>
+        <div class="transcript-toolbar">
+          <input type="search" id="transcript-search" placeholder="Search transcript…" aria-label="Search transcript" />
+          <span class="muted" id="transcript-match-count"></span>
+        </div>
+        <div class="transcript-list" id="transcript-list"></div>
+      </section>
+
+      <!-- Raw JSON viewers -->
+      <section class="panel span-3">
+        <h2 class="panel-title">Raw payloads</h2>
+        <details class="json-viewer" id="json-call-request">
+          <summary>call_request</summary>
+          <div class="json-viewer-body">
+            <button class="btn btn-sm copy-btn" data-copy-target="json-call-request-pre" type="button">Copy</button>
+            <pre id="json-call-request-pre"></pre>
+          </div>
+        </details>
+        <details class="json-viewer" id="json-console-response">
+          <summary>gnani_console_response</summary>
+          <div class="json-viewer-body">
+            <button class="btn btn-sm copy-btn" data-copy-target="json-console-response-pre" type="button">Copy</button>
+            <pre id="json-console-response-pre"></pre>
+          </div>
+        </details>
+        <details class="json-viewer" id="json-post-call">
+          <summary>post_call_payload</summary>
+          <div class="json-viewer-body">
+            <button class="btn btn-sm copy-btn" data-copy-target="json-post-call-pre" type="button">Copy</button>
+            <pre id="json-post-call-pre"></pre>
+          </div>
+        </details>
+      </section>
+
+      <!-- Audit log -->
+      <section class="panel span-3">
+        <h2 class="panel-title">Audit log</h2>
+        <div class="table-scroll">
+          <table class="audit-table">
+            <caption class="visually-hidden">Audit log of actions taken on this call</caption>
+            <thead>
+              <tr>
+                <th scope="col">Timestamp</th>
+                <th scope="col">Actor</th>
+                <th scope="col">Action</th>
+                <th scope="col">Detail</th>
+              </tr>
+            </thead>
+            <tbody id="audit-log-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast-region" role="status" aria-live="polite"></div>
+
+<script src="js/format.js"></script>
+<script src="js/api.js"></script>
+<script src="js/detail.js"></script>
+</body>
+</html>

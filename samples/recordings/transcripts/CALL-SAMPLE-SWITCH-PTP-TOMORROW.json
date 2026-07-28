@@ -1,0 +1,74 @@
+[
+  {
+    "turn": 1,
+    "speaker": "bot",
+    "text": "Hello, this is Aria calling from Apex Financial Services regarding the loan account ending in 6155. May I confirm I am speaking with Miguel Santos?",
+    "language": "en-US"
+  },
+  {
+    "turn": 2,
+    "speaker": "customer",
+    "text": "Speaking, yes.",
+    "language": "en-US"
+  },
+  {
+    "turn": 3,
+    "speaker": "bot",
+    "text": "Thank you. I'm calling about your installment of one thousand two hundred dollars, which was due on July twenty fifth.",
+    "language": "en-US"
+  },
+  {
+    "turn": 4,
+    "speaker": "customer",
+    "text": "Perdón, ¿podría continuar en español, por favor? Lo entiendo mucho mejor.",
+    "language": "es-ES"
+  },
+  {
+    "turn": 5,
+    "speaker": "bot",
+    "text": "Claro que sí, continuamos en español. Su cuota de mil doscientos dólares venció el veinticinco de julio. ¿Podría realizar el pago hoy?",
+    "language": "es-ES"
+  },
+  {
+    "turn": 6,
+    "speaker": "customer",
+    "text": "Hoy no, pero mañana sí. Voy a pagar mañana sin falta.",
+    "language": "es-ES"
+  },
+  {
+    "turn": 7,
+    "speaker": "bot",
+    "text": "Muy bien. ¿Sería el monto completo de mil doscientos dólares mañana, veintinueve de julio?",
+    "language": "es-ES"
+  },
+  {
+    "turn": 8,
+    "speaker": "customer",
+    "text": "Sí, el monto completo.",
+    "language": "es-ES"
+  },
+  {
+    "turn": 9,
+    "speaker": "bot",
+    "text": "Perfecto, lo anoto. Usted pagará mil doscientos dólares el veintinueve de julio. ¿Es correcto?",
+    "language": "es-ES"
+  },
+  {
+    "turn": 10,
+    "speaker": "customer",
+    "text": "Correcto. ¿Algo más?",
+    "language": "es-ES"
+  },
+  {
+    "turn": 11,
+    "speaker": "bot",
+    "text": "Eso es todo. Gracias por su tiempo, señor Santos. Que tenga un buen día.",
+    "language": "es-ES"
+  },
+  {
+    "turn": 12,
+    "speaker": "customer",
+    "text": "Igualmente, gracias. Adiós.",
+    "language": "es-ES"
+  }
+]

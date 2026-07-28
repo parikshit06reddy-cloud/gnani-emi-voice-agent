@@ -1,0 +1,56 @@
+{
+  "event_id": "evt-sample-callback",
+  "call_id": "CALL-20260728-1004",
+  "gnani_call_reference": "gnani-evt-sample-callback",
+  "call_status": "completed",
+  "call_duration_seconds": 35,
+  "call_started_at": "2026-07-28T12:00:00+00:00",
+  "call_ended_at": "2026-07-28T12:01:32+00:00",
+  "recording_url": "/recordings/CALL-20260728-1004.wav",
+  "language_detected": "en-US",
+  "asr_engine": "gnani-prisma",
+  "tts_engine": "gnani-timbre-2.5",
+  "llm_engine": "gnani-evon",
+  "disposition": {
+    "stage_code": "CALLBACK_SCHEDULED",
+    "disposition_reason": "Customer requested a callback at a specific time tomorrow due to being busy.",
+    "disposition_summary": "Customer was in a meeting and requested a callback tomorrow at 5pm.",
+    "callback_datetime": "2026-07-29T17:00:00+00:00",
+    "confidence": 0.88,
+    "customer_verified": true,
+    "sentiment": "neutral",
+    "evidence_quote": "Please call me back tomorrow at 5pm"
+  },
+  "transcript": [
+    {
+      "turn": 1,
+      "speaker": "bot",
+      "text": "Am I speaking with Daniel O'Sullivan about your EMI?",
+      "language": "en-US"
+    },
+    {
+      "turn": 2,
+      "speaker": "customer",
+      "text": "Yes, but I'm actually in a meeting right now.",
+      "language": "en-US"
+    },
+    {
+      "turn": 3,
+      "speaker": "bot",
+      "text": "I understand, this will only take a moment. Can I proceed briefly?",
+      "language": "en-US"
+    },
+    {
+      "turn": 4,
+      "speaker": "customer",
+      "text": "No, I really can't talk right now. Can you please call me back tomorrow at 5pm?",
+      "language": "en-US"
+    },
+    {
+      "turn": 5,
+      "speaker": "bot",
+      "text": "Of course, I will call you back tomorrow, July 29th, at 5pm. Thank you for your time.",
+      "language": "en-US"
+    }
+  ]
+}
