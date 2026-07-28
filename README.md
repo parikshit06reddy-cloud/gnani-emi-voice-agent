@@ -148,9 +148,32 @@ gnani-emi-voice-agent/
 ### Option A — Docker Compose
 
 ```bash
-cp .env.example .env
+git clone https://github.com/parikshit06reddy-cloud/gnani-emi-voice-agent.git
+cd gnani-emi-voice-agent
+cp .env.example .env          # Windows: copy .env.example .env
 docker compose up --build
 ```
+
+In a **second terminal** (after the API container is healthy), seed the 12 mandatory
+scenarios plus 2 supplementary rows so the dashboard shows 14 calls:
+
+```bash
+docker exec gnani-emi-api python scripts/seed_scenarios.py --base-url http://localhost:8000
+```
+
+Verify the stack (requires Docker Desktop running and the compose stack up):
+
+```bash
+curl -s http://localhost:8000/health
+# expect: "repository":"mongo"  (not "json")
+```
+
+Or open [http://localhost:8000/health](http://localhost:8000/health) in a browser for a
+human-readable status page (same data; `curl` still receives JSON).
+
+Then open [http://localhost:8000/](http://localhost:8000/) — you should see **14 calls**.
+Open any call with a linked recording and press play to confirm audio works.
+
 Compose brings up the API **plus a bundled MongoDB** and wires them together
 (`docker-compose.yml` sets `MONGODB_URI=mongodb://mongo:27017`, overriding `.env`,
 so the compose stack always uses the preferred MongoDB backend). `GNANI_MODE=mock`
@@ -218,12 +241,22 @@ pytest
 
 ## Running the 12 mandatory scenarios
 
+Docker Compose (no local Python required):
+
 ```bash
-python scripts/seed_scenarios.py
+docker exec gnani-emi-api python scripts/seed_scenarios.py --base-url http://localhost:8000
 ```
+
+Local virtualenv:
+
+```bash
+python scripts/seed_scenarios.py --base-url http://localhost:8000
+```
+
 Produces [`docs/test-results.json`](./docs/test-results.json), cross-referenced by scenario in
 [`docs/test-scenarios.md`](./docs/test-scenarios.md). All 12 resulting calls, their stage codes,
-and disposition reasons are then visible on the dashboard.
+and disposition reasons are then visible on the dashboard (14 rows total including 2
+supplementary scenarios).
 
 ## URLs
 
