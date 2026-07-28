@@ -7,6 +7,7 @@ from fastapi import Depends, FastAPI
 from fastapi.testclient import TestClient
 
 from app.core.config import get_settings
+from app.core.exceptions import register_exception_handlers
 from app.core.security import require_webhook_key
 
 
@@ -20,6 +21,7 @@ def webhook_app(monkeypatch):
     monkeypatch.setenv("GNANI_MODE", "mock")
 
     app = FastAPI()
+    register_exception_handlers(app)
 
     @app.get("/hook")
     async def hook_route(_: str = Depends(require_webhook_key)):
