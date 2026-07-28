@@ -75,11 +75,24 @@ Note the header is `X-Webhook-Key` (enforced by `require_webhook_key` in `app/co
 **not** `X-API-Key` — `X-API-Key` guards the business endpoints and is a different secret.
 
 **Known risk:** if the console's Post-Call Trigger form does not support custom request headers,
-Gnani cannot send `X-Webhook-Key` and every webhook will 401. If that turns out to be the case,
-do not disable the check. Instead add a narrow, explicit alternative in
-`require_webhook_key` — accept the key from a query parameter on that one route
-(`?key=...`, over HTTPS only) — and note the tradeoff in the PR. Silently unauthenticating a
-webhook that mutates call records is the wrong fix.
+Gnani cannot send `X-Webhook-Key` and every webhook will 401. Enable the query-key fallback
+instead (HTTPS tunnel required):
+
+```bash
+# .env
+WEBHOOK_ALLOW_QUERY_KEY=true
+WEBHOOK_API_KEY=<strong-random-value>
+```
+
+Console Post-Call Trigger URL:
+
+```
+POST https://<your-subdomain>.ngrok.app/api/v1/webhooks/post-call?webhook_key=<same-value>
+```
+
+This is implemented in `require_webhook_key` (`app/core/security.py`) and covered by tests in
+`tests/test_api_webhooks.py`. It is disabled by default so production deployments are not
+silently weakened. Do not disable webhook authentication entirely.
 
 `PUBLIC_WEBHOOK_BASE_URL` is what the backend *tells Gnani per call*; the Post-Call Trigger field
 is the *agent-level* fallback. Keep both in sync — a stale value in either place is the most common

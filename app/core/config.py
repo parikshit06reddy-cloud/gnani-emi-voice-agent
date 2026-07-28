@@ -47,6 +47,10 @@ class Settings(BaseSettings):
     # --- Security ------------------------------------------------------
     API_KEY: str = DEFAULT_API_KEY
     WEBHOOK_API_KEY: str = DEFAULT_WEBHOOK_KEY
+    # When true, the post-call webhook also accepts the webhook secret via
+    # ``?webhook_key=`` or ``?key=`` (HTTPS only in production). Disabled by
+    # default — enable only when the Gnani Console cannot send custom headers.
+    WEBHOOK_ALLOW_QUERY_KEY: bool = False
 
     # --- Gnani Agents Console integration -------------------------------
     GNANI_MODE: Literal["mock", "live"] = "mock"

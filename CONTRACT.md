@@ -121,7 +121,9 @@ Error envelope for all handled errors:
 ```
 
 ## 2. POST /api/v1/webhooks/post-call
-Auth: header `X-Webhook-Key: <WEBHOOK_API_KEY>`
+Auth: header `X-Webhook-Key: <WEBHOOK_API_KEY>`. When `WEBHOOK_ALLOW_QUERY_KEY=true`, also
+accepts `?webhook_key=` or `?key=` on the URL (HTTPS only; for Console tenants without custom
+header support).
 
 Request body (accepts Gnani-style payload):
 ```json
@@ -248,7 +250,7 @@ Dashboard falls back to 10s polling if the socket closes.
 
 ## Env vars (.env.example)
 APP_NAME, APP_VERSION, ENV, LOG_LEVEL, HOST, PORT,
-API_KEY, WEBHOOK_API_KEY,
+API_KEY, WEBHOOK_API_KEY, WEBHOOK_ALLOW_QUERY_KEY=false,
 GNANI_MODE (mock|live), GNANI_BASE_URL, GNANI_API_KEY, GNANI_AGENT_ID, GNANI_CALLER_ID,
 GNANI_ASR_MODEL=gnani-prisma, GNANI_TTS_MODEL=gnani-timbre-2.5, GNANI_LLM_MODEL=gnani-evon,
 GNANI_TIMEOUT_SECONDS=10, GNANI_MAX_RETRIES=3, GNANI_RETRY_BACKOFF_SECONDS=0.5,

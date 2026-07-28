@@ -1,5 +1,7 @@
 # Gnani EMI Collections Voice Agent
 
+[![CI](https://github.com/parikshit06reddy-cloud/gnani-emi-voice-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/parikshit06reddy-cloud/gnani-emi-voice-agent/actions/workflows/ci.yml)
+
 Outbound AI voice agent for EMI (loan installment) collections, built on the **Gnani Agents
 Console** platform (required stack: Gnani Prisma ASR, Gnani Timbre 2.5 TTS, Gnani Evon LLM — see
 "Gnani Agents Console configuration" below for what this Console tenant actually exposes) with a
@@ -16,6 +18,19 @@ application initiates each call (`POST /api/Initial_Message`), receives the post
 webhook from Gnani Agents Console (`POST /api/v1/webhooks/post-call`), persists it idempotently,
 and exposes it through a REST + WebSocket API consumed by a lightweight HTML/CSS/JS dashboard.
 The full API and data contract is defined in [`CONTRACT.md`](./CONTRACT.md).
+
+## Demo & presentation
+
+For the live review session, see **[`docs/DEMO.md`](./docs/DEMO.md)** — an 8-minute demo script
+with talking points, Console walkthrough, and Q&A prep.
+
+One-command demo prep (Docker + seed 14 calls):
+
+```bash
+./scripts/demo_prepare.sh          # macOS/Linux
+# or
+.\scripts\demo_prepare.ps1         # Windows PowerShell
+```
 
 ## Gnani Agents Console configuration
 
@@ -136,6 +151,11 @@ gnani-emi-voice-agent/
   docs/                     # architecture, stage-code logic, schema, API, test scenarios (this submission)
   tests/                    # pytest (backend team)
   scripts/seed_scenarios.py # runs the 12 mandatory scenarios end-to-end in mock mode (backend team)
+  scripts/demo_prepare.sh   # one-command Docker demo prep (macOS/Linux)
+  scripts/demo_prepare.ps1  # one-command Docker demo prep (Windows)
+  scripts/verify_submission.py  # static §11 checklist verifier (CI-safe)
+  .github/workflows/ci.yml  # GitHub Actions: pytest + seed + checklist
+  docs/DEMO.md              # 8-minute live demo script + Q&A prep
   postman/                  # Postman collection / cURL commands (backend team)
   samples/
     recordings/             # 3 playable sample call recordings + turn-aligned transcripts
@@ -237,7 +257,11 @@ No secrets are committed — see the Security note below.
 ```bash
 source .venv/bin/activate
 pytest
+python scripts/verify_submission.py   # static §11 checklist (no server needed)
 ```
+
+CI (`.github/workflows/ci.yml`) runs `verify_submission`, `pytest`, and `seed_scenarios.py` on
+every push to `main`.
 
 ## Running the 12 mandatory scenarios
 
@@ -316,10 +340,11 @@ supplementary scenarios).
 - PII masking (masked phone number on every read path)
 - Detailed audit logs (`audit_log[]` per call record)
 - Automated tests (`tests/`, runnable via `pytest`)
+- CI/CD pipeline (GitHub Actions: pytest + 12/12 scenario seed + submission checklist)
 
-See [`docs/production-readiness.md`](./docs/production-readiness.md), [`docs/live-call-runbook.md`](./docs/live-call-runbook.md) for the additional
-production-hardening items not implemented in this assignment scope (HMAC webhook signing,
-horizontal scaling, secrets manager integration, DNC/compliance automation, CI/CD, DR).
+See [`docs/DEMO.md`](./docs/DEMO.md), [`docs/production-readiness.md`](./docs/production-readiness.md), [`docs/live-call-runbook.md`](./docs/live-call-runbook.md) for the demo
+script, additional production-hardening items not implemented in this assignment scope (HMAC webhook signing,
+horizontal scaling, secrets manager integration, DNC/compliance automation, DR).
 
 ## Spec inconsistency handled (assignment §3.3 vs §5.1/§5.2)
 

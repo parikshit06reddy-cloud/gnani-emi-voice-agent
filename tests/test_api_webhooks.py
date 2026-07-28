@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import pytest
 
+from app.core.config import get_settings
+
 INITIAL_BODY = {
     "customer_id": "CUST100",
     "customer_name": "Ana Torres",
@@ -215,3 +217,28 @@ async def test_webhook_vague_commitment_never_becomes_ptp_end_to_end(client, api
     assert resp.status_code == 200
     assert resp.json()["stage_code"] == "UNCLEAR"
     assert resp.json()["ptp_date"] is None
+
+
+async def test_webhook_query_key_rejected_when_disabled(client, api_headers):
+    call_id = await _create_call(client, api_headers)
+    resp = await client.post(
+        "/api/v1/webhooks/post-call?webhook_key=test-webhook-key",
+        json=_webhook_payload(call_id, event_id="evt-query-disabled"),
+    )
+    assert resp.status_code == 401
+
+
+async def test_webhook_accepts_query_key_when_enabled(client, api_headers, monkeypatch):
+    monkeypatch.setenv("WEBHOOK_ALLOW_QUERY_KEY", "true")
+    get_settings.cache_clear()
+
+    call_id = await _create_call(client, api_headers)
+    resp = await client.post(
+        "/api/v1/webhooks/post-call?webhook_key=test-webhook-key",
+        json=_webhook_payload(call_id, event_id="evt-query-enabled"),
+    )
+    assert resp.status_code == 200
+    assert resp.json()["duplicate"] is False
+    assert resp.json()["stage_code"] == "PTP_TODAY"
+
+    get_settings.cache_clear()

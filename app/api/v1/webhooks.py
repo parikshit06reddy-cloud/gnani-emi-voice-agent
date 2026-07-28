@@ -24,7 +24,9 @@ router = APIRouter(tags=["webhooks"])
         "deterministic stage-code engine, stores the transcript/summary, "
         "and captures PTP/callback details. Idempotent on `event_id` "
         "(fallback: `call_id` + `call_ended_at`) — replays return "
-        "`duplicate: true` with no state change."
+        "`duplicate: true` with no state change. Authenticated via "
+        "`X-Webhook-Key` header, or `?webhook_key=` when "
+        "`WEBHOOK_ALLOW_QUERY_KEY=true`."
     ),
     responses={
         401: {"model": ErrorResponse, "description": "Missing/invalid X-Webhook-Key."},
